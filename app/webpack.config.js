@@ -23,6 +23,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
       "@public": path.resolve(__dirname, "public"),
+      "@layouts": path.resolve(__dirname, "src", "layouts"),
     }
   },
   module: {

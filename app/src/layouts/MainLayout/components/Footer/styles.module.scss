@@ -1,0 +1,19 @@
+.footer {
+  height         : 50px;
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+
+  background-color: var(--highlight-color);
+  box-sizing      : border-box;
+
+  border-top: 1px solid var(--dark-blue-color);
+
+  .burger_menu {
+    margin-left : auto;
+    margin-right: 15px;
+    width       : 32px;
+    height      : 32px;
+    cursor      : pointer;
+  }
+}

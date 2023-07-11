@@ -1,0 +1,14 @@
+.left_menu {
+  width : 100%;
+  height: calc(100% - 50px);
+
+  position: fixed;
+  z-index : 1000;
+
+  transform : translateX(-100%);
+  transition: transform 1500ms ease-in-out;
+}
+
+.active {
+  transform: translateX(0px);
+}
