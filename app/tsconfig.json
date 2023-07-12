@@ -11,6 +11,9 @@
     "paths": {
       "@public/*": ["public/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@routes/*": ["src/routes/*"]
     }
   }
 }
