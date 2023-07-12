@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@hooks/index";
+import { useStore } from "@hooks/index";
 
 interface PrivateRouteProps {
   component: React.ReactNode;
@@ -8,10 +8,12 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ component }) => {
 
-  const { user } = useAuth();
+  const { authStore } = useStore();
+
+  const isAuthorized = authStore.isAuthorized;
 
   return (
-    user !== null ? component : <Navigate replace to="/login" />
+    isAuthorized ? component : <Navigate replace to="/login" />
   );
 }
 

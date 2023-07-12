@@ -24,14 +24,14 @@ const LoginForm: React.FC = observer(() => {
       <Form.Item
         label={"Логин"}
         name={"login"}
-        rules={[{ required: true, message: "Введите логин!" }]}
+        rules={[{ required: true, message: "Не менее 4 символов!", min: 4, max: 32 }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
         label={"Пароль"}
         name={"password"}
-        rules={[{ required: true, message: "Введите пароль!" }]}
+        rules={[{ required: true, message: "Не менее 5 символов!", min: 5, max: 64 }]}
       >
         <Input.Password />
       </Form.Item>

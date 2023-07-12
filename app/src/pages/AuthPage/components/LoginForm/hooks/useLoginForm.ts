@@ -2,11 +2,11 @@ import React from "react";
 import AuthStore from "@stores/AuthStore";
 import { LoginData } from "@pages/AuthPage/interfaces";
 
-interface UseLoginFormProps {
+interface LoginFormHookProps {
   authStore: AuthStore;
 }
 
-const useLoginForm = ({ authStore }: UseLoginFormProps) => {
+const useLoginForm = ({ authStore }: LoginFormHookProps) => {
 
   const [mode, setMode] = React.useState<"login" | "register">("login");
 

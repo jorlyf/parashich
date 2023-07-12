@@ -1,18 +1,21 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 import PrivateRoute from "./PrivateRoute";
-import { useAuth } from "@hooks/index";
+import { useStore } from "@hooks/index";
 import { HomePage, AuthPage } from "@pages/index";
 
-const NavRoutes: React.FC = () => {
+const NavRoutes: React.FC = observer(() => {
 
-  const { user } = useAuth();
+  const { authStore } = useStore();
+
+  const isAuthorized = authStore.isAuthorized;
 
   return (
     <Routes>
       <Route
         path="/login"
-        element={user === null ? <AuthPage /> : <Navigate replace to="/" />}
+        element={isAuthorized ? <Navigate replace to="/" /> : <AuthPage />}
       />
 
       <Route
@@ -21,6 +24,6 @@ const NavRoutes: React.FC = () => {
       />
     </Routes>
   );
-}
+});
 
 export default NavRoutes;
