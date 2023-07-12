@@ -1,6 +1,6 @@
 const useAuth = () => {
 
-  const user: any = {};
+  const user: any = null;
   
   return {
     user

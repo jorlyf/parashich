@@ -15,11 +15,11 @@ const useLeftMenu = ({ isOpen }: LeftMenuHookProps) => {
     return [
       {
         key: "profile",
-        label: "моя параша"
+        label: "profile"
       },
       {
         key: "chat",
-        label: "шептунка"
+        label: "chat" 
       }
     ];
   }, [isOpen]);

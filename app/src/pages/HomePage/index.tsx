@@ -1,10 +1,11 @@
 import React from "react";
+import { MainLayout } from "@layouts/index";
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <MainLayout>
 
-    </div>
+    </MainLayout>
   );
 }
 

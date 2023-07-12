@@ -1,9 +1,8 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import useAuth from "@hooks/useAuth";
-import LoginPage from "@pages/LoginPage";
-import HomePage from "@pages/HomePage";
+import { useAuth } from "@hooks/index";
+import { HomePage, AuthPage } from "@pages/index";
 
 const NavRoutes: React.FC = () => {
 
@@ -13,7 +12,7 @@ const NavRoutes: React.FC = () => {
     <Routes>
       <Route
         path="/login"
-        element={user === null ? <LoginPage /> : <Navigate replace to="/" />}
+        element={user === null ? <AuthPage /> : <Navigate replace to="/" />}
       />
 
       <Route

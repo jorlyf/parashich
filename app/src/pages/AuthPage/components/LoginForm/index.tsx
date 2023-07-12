@@ -1,0 +1,58 @@
+import React from "react";
+import { Button, Form, Input } from "antd";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@hooks/index";
+import useLoginForm from "./hooks/useLoginForm";
+import styles from "./styles.module.scss";
+
+const LoginForm: React.FC = observer(() => {
+
+  const { authStore } = useStore();
+
+  const {
+    onSubmit,
+    authMode,
+    toggleAuthMode
+  } = useLoginForm({ authStore });
+
+  return (
+    <Form
+      className={styles.login_form}
+      labelCol={{ span: 5 }}
+      onFinish={onSubmit}
+    >
+      <Form.Item
+        label={"Логин"}
+        name={"login"}
+        rules={[{ required: true, message: "Введите логин!" }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={"Пароль"}
+        name={"password"}
+        rules={[{ required: true, message: "Введите пароль!" }]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{ marginRight: "24px" }}
+        >
+          Войти
+        </Button>
+
+        <Button
+          onClick={toggleAuthMode}
+        >
+          {authMode === "login" ? "Я уже зарегистрирован" : "У меня есть аккаунт"}
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+});
+
+export default LoginForm;
