@@ -5,6 +5,7 @@ class AuthStore {
 
   login: string | null = null;
   isAuthorized: boolean = true;
+  wasTokenAuthAttempt: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,11 +26,16 @@ class AuthStore {
   }
 
   tokenAuthorize(token: string) {
-
+    this.setWasTokenAuthAttempt(true);
   }
 
   logout() {
+    this.login = null;
+    this.isAuthorized = false;
+  }
 
+  setWasTokenAuthAttempt(wasTokenAuthAttempt: boolean) {
+    this.wasTokenAuthAttempt = wasTokenAuthAttempt;
   }
 }
 

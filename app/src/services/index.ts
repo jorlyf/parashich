@@ -1,3 +1,4 @@
 import AuthService from "./AuthService";
+import LSService from "./LSService";
 
-export { AuthService }
+export { AuthService, LSService }
