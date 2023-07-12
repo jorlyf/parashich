@@ -4,7 +4,8 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: process.env.MODE,
+  devtool: "eval-cheap-source-map",
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
@@ -28,14 +29,32 @@ module.exports = {
       "@pages": path.resolve(__dirname, "src", "pages"),
       "@routes": path.resolve(__dirname, "src", "routes"),
       "@stores": path.resolve(__dirname, "src", "stores"),
-      "@services": path.resolve(__dirname, "src", "services")
+      "@services": path.resolve(__dirname, "src", "services"),
+      "@http": path.resolve(__dirname, "src", "http")
     }
   },
   module: {
     rules: [
       {
-        test: /\.(css|scss|module.scss)$/,
-        use: ["style-loader", "css-loader", "sass-loader"]
+        test: /\.(css)$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+          },
+          "sass-loader"]
+      },
+      {
+        test: /\.(scss)$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: { localIdentName: "[local]--[hash:base64:5]", },
+            }
+          },
+          "sass-loader"]
       },
       {
         test: /\.(jpg|jpeg|png|svg)$/,

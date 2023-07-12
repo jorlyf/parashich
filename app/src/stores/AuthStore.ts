@@ -1,10 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { LoginData } from "@pages/AuthPage/interfaces";
 
 class AuthStore {
 
   login: string | null = null;
-  isAuthorized: boolean = false;
+  isAuthorized: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -14,6 +14,11 @@ class AuthStore {
     if (mode === "login") {
       this.login = loginData.login;
       this.isAuthorized = true;
+
+      // runInAction(() =>
+      //   setTimeout(() => {
+      //     this.isAuthorized = false;
+      //   }, 2000));
     } else {
 
     }
