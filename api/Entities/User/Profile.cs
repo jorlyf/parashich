@@ -14,4 +14,6 @@ public class Profile : IEntity
   public string? AvatarUrl { get; set; }
 
   public string? Status { get; set; }
+
+  public List<Post> Posts { get; set; } = null!;
 }
