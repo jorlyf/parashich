@@ -23,9 +23,9 @@ public class TokenService : ITokenService
         new Claim("login", user.Login)
       };
 
-    string? jwtKey = _configuration["Jwt:Key"];
-    if (jwtKey == null) throw new Exception("Jwt:Key is not defined in a config.");
-
+    string? jwtKey = _configuration["Jwt:Key"]
+    ?? throw new Exception("Jwt:Key is not defined in a config");
+    
     SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(jwtKey));
     SigningCredentials signIn = new(key, SecurityAlgorithms.HmacSha512);
     JwtSecurityToken token = new(

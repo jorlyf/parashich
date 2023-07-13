@@ -24,13 +24,13 @@ public class AuthService : IAuthService
     User user = await _UoW.UserRepository
       .GetByLogin(login)
       .FirstOrDefaultAsync()
-      ?? throw new ApiException(400, "Неверный логин или пароль.");
+      ?? throw new ApiException(400, "Invalid login data");
 
     string passwordHash = _hashService.GetHash(password);
 
     if (user.PasswordHash != passwordHash)
     {
-      throw new ApiException(400, "Неверный логин или пароль.");
+      throw new ApiException(400, "Invalid login data");
     }
 
     string token = _tokenService.Encode(user);
@@ -41,7 +41,7 @@ public class AuthService : IAuthService
   {
     if (await (_UoW.UserRepository.IsLoginExist(login)))
     {
-      throw new ApiException(400, "Логин занят другим пользователем.");
+      throw new ApiException(400, "Login already in use");
     }
 
     string passwordHash = _hashService.GetHash(password);

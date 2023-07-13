@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import NavRoutes from "@routes/index";
 import useStore from "@hooks/useStore";
 import useTokenAuth from "@hooks/useTokenAuth";
+import "../i18n";
 import styles from "./styles.module.scss";
 import "./colors.scss";
 

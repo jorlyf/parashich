@@ -16,7 +16,8 @@
       "@routes/*": ["src/routes/*"],
       "@stores/*": ["src/stores/*"],
       "@services/*": ["src/services/*"],
-      "@http/*": ["src/http/*"]
+      "@http/*": ["src/http/*"],
+      "@translations/*": ["src/translations/*"]
     }
   }
 }

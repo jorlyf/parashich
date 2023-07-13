@@ -27,7 +27,7 @@ builder.Services
   .AddJwtBearer(options =>
 {
   string? jwtKey = builder.Configuration["Jwt:Key"] ??
-   throw new Exception("Jwt:Key is not defined in a config.");
+   throw new Exception("Jwt:Key is not defined in a config");
   options.RequireHttpsMetadata = false;
   options.SaveToken = true;
   options.TokenValidationParameters = new TokenValidationParameters()
