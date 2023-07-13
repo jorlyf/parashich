@@ -23,12 +23,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 builder.Services
-.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
+  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
 {
-  string? jwtKey = builder.Configuration["Jwt:Key"];
-  if (jwtKey == null) throw new Exception("Jwt:Key is not defined in a config.");
-
+  string? jwtKey = builder.Configuration["Jwt:Key"] ??
+   throw new Exception("Jwt:Key is not defined in a config.");
   options.RequireHttpsMetadata = false;
   options.SaveToken = true;
   options.TokenValidationParameters = new TokenValidationParameters()

@@ -21,14 +21,10 @@ public class AuthService : IAuthService
 
   public async Task<string> LoginAsync(string login, string password)
   {
-    User? user = await _UoW.UserRepository
+    User user = await _UoW.UserRepository
       .GetByLogin(login)
-      .FirstOrDefaultAsync();
-
-    if (user == null)
-    {
-      throw new ApiException(400, "Неверный логин или пароль.");
-    }
+      .FirstOrDefaultAsync()
+      ?? throw new ApiException(400, "Неверный логин или пароль.");
 
     string passwordHash = _hashService.GetHash(password);
 
