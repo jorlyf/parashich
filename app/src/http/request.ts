@@ -39,16 +39,12 @@ const request = async <T>({
   try {
     const response = await method(config);
 
-    console.log(response);
-
     return {
       status: response.status,
       message: null,
       data: response.data
     }
   } catch (error) {
-    console.log(error);
-
     return {
       status: error.status,
       message: null,

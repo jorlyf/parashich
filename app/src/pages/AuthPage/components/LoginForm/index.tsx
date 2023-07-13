@@ -48,7 +48,7 @@ const LoginForm: React.FC = observer(() => {
         <Button
           onClick={toggleAuthMode}
         >
-          {authMode === "login" ? "Я уже зарегистрирован" : "У меня есть аккаунт"}
+          {authMode === "login" ? "У меня есть аккаунт" : "Я уже зарегистрирован"}
         </Button>
       </Form.Item>
     </Form>

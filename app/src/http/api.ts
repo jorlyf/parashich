@@ -1,3 +1,4 @@
+import LSService from "@services/LSService";
 import axios from "axios";
 
 const getBaseUrl = () => {
@@ -15,7 +16,7 @@ const $api = axios.create({
 });
 
 $api.interceptors.request.use(config => {
-  // config.headers!.Authorization = "Bearer " + (LocalStorageService.getToken() ?? "");
+  config.headers!.Authorization = `Bearer ${LSService.getToken()}`;
   return config;
 });
 

@@ -45,6 +45,8 @@ builder.Services
 builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<HashService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddScoped<UnitOfWork>();
 #endregion
