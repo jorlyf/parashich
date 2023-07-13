@@ -1,4 +1,5 @@
 using api.Entities;
+using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +27,14 @@ public class AuthService : IAuthService
 
     if (user == null)
     {
-      throw new Exception("invalid login data");
+      throw new ApiException(400, "Неверный логин или пароль.");
     }
 
     string passwordHash = _hashService.GetHash(password);
 
     if (user.PasswordHash != passwordHash)
     {
-      throw new Exception("invalid login data");
+      throw new ApiException(400, "Неверный логин или пароль.");
     }
 
     string token = _tokenService.Encode(user);
@@ -44,7 +45,7 @@ public class AuthService : IAuthService
   {
     if (await (_UoW.UserRepository.IsLoginExist(login)))
     {
-      throw new Exception("login exist");
+      throw new ApiException(400, "Логин занят другим пользователем.");
     }
 
     string passwordHash = _hashService.GetHash(password);

@@ -1,5 +1,6 @@
 using System.Text;
 using api.DbContexts;
+using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -81,6 +82,14 @@ if (app.Environment.IsDevelopment())
   app.UseCors("Development");
 else
   app.UseCors("Production");
+
+app.UseExceptionHandler(config =>
+{
+  config.Run(context =>
+  {
+    return ExceptionMiddleware.HandleExceptionAsync(context);
+  });
+});
 
 app.UseHttpsRedirection();
 
