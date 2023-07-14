@@ -21,6 +21,7 @@ const LoginForm: React.FC = observer(() => {
       labelCol={{ span: 5 }}
       onFinish={onSubmit}
     >
+      <h2>{authMode === "login" ? "Вход" : "Регистрация"}</h2>
       <Form.Item
         label={"Логин"}
         name={"login"}
@@ -42,14 +43,14 @@ const LoginForm: React.FC = observer(() => {
           htmlType="submit"
           style={{ marginRight: "24px" }}
         >
-          Войти
+          {authMode === "login" ? "Войти" : "Зарегистрироваться"}
         </Button>
+      </Form.Item>
 
-        <Button
-          onClick={toggleAuthMode}
-        >
-          {authMode === "login" ? "У меня есть аккаунт" : "Я уже зарегистрирован"}
-        </Button>
+      <Form.Item>
+        <a onClick={toggleAuthMode}>
+          {authMode === "login" ? "Я уже зарегистрирован" : "У меня есть аккаунт"}
+        </a>
       </Form.Item>
     </Form>
   );
