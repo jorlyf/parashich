@@ -32,6 +32,7 @@ module.exports = {
       "@services": path.resolve(__dirname, "src", "services"),
       "@http": path.resolve(__dirname, "src", "http"),
       "@translations": path.resolve(__dirname, "src", "translations"),
+      "@entities": path.resolve(__dirname, "src", "entities"),
       "@dtos": path.resolve(__dirname, "src", "dtos"),
       "@components": path.resolve(__dirname, "src", "components")
     }

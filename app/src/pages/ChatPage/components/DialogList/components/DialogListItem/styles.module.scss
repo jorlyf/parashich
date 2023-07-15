@@ -6,8 +6,11 @@
   display    : flex;
   align-items: center;
 
-  border       : 1px solid black;
   border-radius: 10px;
+
+  box-shadow: 1px 2px var(--highlight-color);
+
+  background-color: var(--app-color);
 
   margin : 0 auto;
   padding: 5px 20px;
@@ -19,12 +22,31 @@
   }
 
   .dialog_info {
-    .up {
-      .reading_status {}
+    width: 100%;
 
-      .last_message_time {}
+    .up {
+      display    : flex;
+      align-items: center;
+
+      .name {
+        font-weight: 700;
+      }
+
+      .last_message_info {
+        margin-left: auto;
+
+        .last_message_status {
+          display   : block;
+          align-self: end;
+        }
+
+        .last_message_time {
+          display   : block;
+          align-self: end;
+        }
+      }
     }
 
-    .last_message {}
+    .last_message_text {}
   }
 }

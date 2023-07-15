@@ -4,6 +4,7 @@ import useChatPage from "./hooks/useChatPage";
 import Header from "./components/Header";
 import DialogList, { IDialogListItem } from "./components/DialogList";
 import Dialog from "./components/Dialog";
+import { DialogMessageStatus } from "@entities/index";
 
 const ChatPage: React.FC = () => {
 
@@ -17,16 +18,24 @@ const ChatPage: React.FC = () => {
       id: "1",
       name: "admin2",
       avatarUrl: null,
-      lastMessage: "sfasfasfafsa",
-      lastMessageTimestamp: null,
+      lastMessage: {
+        senderUserId: "1",
+        text: "abc",
+        status: DialogMessageStatus.readed,
+        sentAt: 0
+      },
       notificationCount: 0
     },
     {
       id: "2",
       name: "nastya",
       avatarUrl: null,
-      lastMessage: "privet!",
-      lastMessageTimestamp: null,
+      lastMessage: {
+        senderUserId: "1",
+        text: "privet!",
+        status: DialogMessageStatus.readed,
+        sentAt: 0
+      },
       notificationCount: 0
     }
   ];
