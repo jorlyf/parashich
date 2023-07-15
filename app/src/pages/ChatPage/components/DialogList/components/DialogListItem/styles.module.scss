@@ -1,0 +1,30 @@
+.dialog_list_item {
+  width     : 90%;
+  height    : 70px;
+  box-sizing: border-box;
+
+  display    : flex;
+  align-items: center;
+
+  border       : 1px solid black;
+  border-radius: 10px;
+
+  margin : 0 auto;
+  padding: 5px 20px;
+
+  .dialog_avatar {
+    max-width    : 80px;
+    max-height   : 100%;
+    border-radius: 50%;
+  }
+
+  .dialog_info {
+    .up {
+      .reading_status {}
+
+      .last_message_time {}
+    }
+
+    .last_message {}
+  }
+}

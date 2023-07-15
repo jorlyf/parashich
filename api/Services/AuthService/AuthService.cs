@@ -62,7 +62,7 @@ public class AuthService : IAuthService
       AvatarUrl = null
     };
 
-    await _UoW.ProfileRepository.AddAsync(profile);
+    user.Profile = profile;
 
     await _UoW.SaveAsync();
 

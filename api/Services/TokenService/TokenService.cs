@@ -30,7 +30,7 @@ public class TokenService : ITokenService
     SigningCredentials signIn = new(key, SecurityAlgorithms.HmacSha512);
     JwtSecurityToken token = new(
       claims: claims,
-      expires: DateTime.UtcNow.AddMinutes(5),
+      expires: DateTime.UtcNow.AddDays(30),
       signingCredentials: signIn
       );
 

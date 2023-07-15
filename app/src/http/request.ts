@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from "axios";
 import $api from "./api";
 import { RequestType } from "./interfaces";
+import { notification } from "antd";
+import { t } from "i18next";
 
 interface RequestProps {
   url: string;
@@ -45,9 +47,13 @@ const request = async <T>({
       data: response.data
     }
   } catch (error) {
+    if (error.code === "ERR_NETWORK") {
+      notification.error({ message: t("Server is shutdown") });
+    }
+
     return {
-      status: error.status,
-      message: null,
+      status: error.response?.data?.status ?? null,
+      message: error.response?.data?.message ?? null,
       data: null
     }
   }

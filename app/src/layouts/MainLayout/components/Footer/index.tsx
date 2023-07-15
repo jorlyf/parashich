@@ -2,7 +2,6 @@ import React from "react";
 import BurgerMenuIcon from "@public/images/BurgerMenu.svg";
 import ChatIcon from "@public/images/Chat.svg";
 import HomeIcon from "@public/images/Home.svg";
-import useNavigator from "@hooks/useNavigator";
 import styles from "./styles.module.scss";
 import useFooter from "./hooks/useFooter";
 

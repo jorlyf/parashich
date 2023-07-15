@@ -7,8 +7,19 @@
 
   transform : translateX(-100%);
   transition: transform 350ms ease-in-out;
+
+  .menu {
+    width : 100%;
+    height: 100%;
+  }
 }
 
 .active {
   transform: translateX(0px);
+}
+
+.icon {
+  width : 18px;
+  height: 18px;
+  cursor: pointer;
 }

@@ -1,4 +1,8 @@
 {
-  "Invalid login data": "ыыы",
-  "Login already in use": "ыы"
+  "Invalid login data": "Чет не то ты ввел",
+  "Login already in use": "Кликуха уже занята",
+  "Server is shutdown": "Параша в отключке",
+  "Profile": "Моя параша",
+  "Chat": "Шептунка",
+  "Settings": "Чето поменять"
 }

@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PrivateRoute from "./PrivateRoute";
 import { useStore } from "@hooks/index";
-import { HomePage, AuthPage } from "@pages/index";
+import { AuthPage, ChatPage, HomePage } from "@pages/index";
 
 const NavRoutes: React.FC = observer(() => {
 
@@ -21,6 +21,16 @@ const NavRoutes: React.FC = observer(() => {
       <Route
         index
         element={<PrivateRoute component={<HomePage />} />}
+      />
+
+      <Route
+        path="/chat"
+        element={<PrivateRoute component={<ChatPage />} />}
+      />
+
+      <Route
+        path="/*"
+        element={<Navigate replace to="/" />}
       />
     </Routes>
   );

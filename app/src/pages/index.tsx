@@ -1,4 +1,5 @@
-import HomePage from "./HomePage";
 import AuthPage from "./AuthPage";
+import ChatPage from "./ChatPage";
+import HomePage from "./HomePage";
 
-export { HomePage, AuthPage }
+export { ChatPage, HomePage, AuthPage }

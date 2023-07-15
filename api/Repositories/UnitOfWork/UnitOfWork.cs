@@ -8,6 +8,7 @@ public class UnitOfWork : IDisposable
 
   public UserRepository UserRepository { get; }
   public ProfileRepository ProfileRepository { get; }
+  public DialogRepository DialogRepository { get; }
 
   public UnitOfWork(DataContext context)
   {
@@ -15,6 +16,7 @@ public class UnitOfWork : IDisposable
 
     UserRepository = new UserRepository(_context);
     ProfileRepository = new ProfileRepository(_context);
+    DialogRepository = new DialogRepository(_context);
   }
 
   public Task<int> SaveAsync()

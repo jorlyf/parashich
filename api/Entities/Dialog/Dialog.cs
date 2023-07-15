@@ -7,4 +7,6 @@ public class Dialog : IEntity
   public required DialogType Type { get; set; }
 
   public List<DialogMessage> Messages { get; set; } = null!;
+
+  public List<DialogParticipant> Participants{ get; set; } = null!;
 }

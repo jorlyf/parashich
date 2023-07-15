@@ -1,4 +1,8 @@
 {
   "Invalid login data": "Неверный логин или пароль",
-  "Login already in use": "Логин занят другим пользователем"
+  "Login already in use": "Логин занят другим пользователем",
+  "Server is shutdown": "Сервер не отвечает",
+  "Profile": "Профиль",
+  "Chat": "Чат",
+  "Settings": "Настройки"
 }

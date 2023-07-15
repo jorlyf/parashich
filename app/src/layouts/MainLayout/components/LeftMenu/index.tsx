@@ -10,14 +10,22 @@ interface ILeftMenuProps {
 const LeftMenu: React.FC<ILeftMenuProps> = ({ isOpen }) => {
 
   const {
-    items
+    items,
+    activeItem,
+    selectItem
   } = useLeftMenu({ isOpen });
+
+  const handleClick = (key: string) => {
+    selectItem(key);
+  }
 
   return (
     <div className={`${styles.left_menu} ${isOpen && styles.active}`}>
       <Menu
-        defaultSelectedKeys={["1"]}
+        className={styles.menu}
+        activeKey={activeItem?.key?.toString() ?? null}
         items={items}
+        onClick={(x) => handleClick(x.key)}
       />
     </div>
   );

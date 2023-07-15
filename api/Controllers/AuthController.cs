@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
   [Authorize]
   [HttpPost]
   [Route("TokenLogin")]
-  public ActionResult TokenLogin()
+  public ActionResult TokenLoginAsync()
   {
     return Ok();
   }

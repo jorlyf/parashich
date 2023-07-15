@@ -6,13 +6,13 @@ namespace api.Repositories;
 
 public abstract class RepositoryBase<T> where T : class, IEntity
 {
-  private readonly DataContext _context;
+  protected readonly DataContext _context;
   public DbSet<T> Set { get; }
 
   public RepositoryBase(DataContext context)
   {
     _context = context;
-    Set = context.Set<T>();
+    Set = _context.Set<T>();
   }
 
 
