@@ -31,7 +31,8 @@ module.exports = {
       "@stores": path.resolve(__dirname, "src", "stores"),
       "@services": path.resolve(__dirname, "src", "services"),
       "@http": path.resolve(__dirname, "src", "http"),
-      "@translations": path.resolve(__dirname, "src", "translations")
+      "@translations": path.resolve(__dirname, "src", "translations"),
+      "@dtos": path.resolve(__dirname, "src", "dtos")
     }
   },
   module: {

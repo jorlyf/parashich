@@ -1,6 +1,10 @@
 import React from "react";
-import BurgerMenu from "@public/images/BurgerMenu.svg";
+import BurgerMenuIcon from "@public/images/BurgerMenu.svg";
+import ChatIcon from "@public/images/Chat.svg";
+import HomeIcon from "@public/images/Home.svg";
+import useNavigator from "@hooks/useNavigator";
 import styles from "./styles.module.scss";
+import useFooter from "./hooks/useFooter";
 
 interface FooterProps {
   isOpenLeftMenu: boolean;
@@ -8,11 +12,30 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ isOpenLeftMenu, toggleLeftMenu }) => {
+
+  const { navigate } = useFooter();
+
+  const handleClickIcon = (path: string) => {
+    navigate(path);
+  }
+
   return (
     <div className={styles.footer}>
       <img
-        className={styles.burger_menu}
-        src={BurgerMenu}
+        className={styles.icon}
+        src={HomeIcon}
+        onClick={() => handleClickIcon("/")}
+      />
+
+      <img
+        className={styles.icon}
+        src={ChatIcon}
+        onClick={() => handleClickIcon("/chat")}
+      />
+
+      <img
+        className={styles.icon}
+        src={BurgerMenuIcon}
         onClick={toggleLeftMenu}
       />
     </div>

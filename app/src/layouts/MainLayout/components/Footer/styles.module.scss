@@ -9,11 +9,11 @@
 
   border-top: 1px solid var(--dark-blue-color);
 
-  .burger_menu {
-    margin-left : auto;
-    margin-right: 15px;
-    width       : 32px;
-    height      : 32px;
-    cursor      : pointer;
+  padding: 0px 15px;
+
+  .icon {
+    width : 32px;
+    height: 32px;
+    cursor: pointer;
   }
 }
