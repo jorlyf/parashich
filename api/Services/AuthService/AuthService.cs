@@ -23,6 +23,7 @@ public class AuthService : IAuthService
   {
     User user = await _UoW.UserRepository
       .GetByLogin(login)
+      .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "Invalid login data");
 

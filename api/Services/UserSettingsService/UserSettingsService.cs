@@ -21,6 +21,7 @@ public class UserSettingsService : IUserSettingsService
   {
     User user = await _UoW.UserRepository
       .GetById(userId)
+      .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(404, "User is not exist");
 
