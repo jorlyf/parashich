@@ -1,6 +1,6 @@
 import React from "react";
 import LeftArrowIcon from "@public/images/LeftArrow.svg";
-import CustomHeader from "@components/CustomHeader";
+import CustomHeader from "@layouts/MainLayout/components/CustomHeader";
 import styles from "./styles.module.scss";
 
 interface HeaderProps {
