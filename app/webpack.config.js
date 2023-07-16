@@ -9,7 +9,8 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "[name].[hash].js"
+    filename: "[name].[hash].js",
+    publicPath: "/"
   },
   plugins: [
     new HTMLWebpackPlugin({ template: "./public/index.html" }),
