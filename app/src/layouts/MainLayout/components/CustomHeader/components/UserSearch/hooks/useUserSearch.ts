@@ -1,12 +1,15 @@
 import React from "react";
-import { useDebounce } from "@hooks/index";
+import { useDebounce, useNavigator } from "@hooks/index";
 import request from "@http/request";
 import { RequestType } from "@http/interfaces";
 import { UserDTO } from "@dtos/index";
-import { UserSearchResultItem } from "../components/UserSearchResult";
+import { IUserSearchResultListItem } from "../components/UserSearchResultList";
 
 const useUserSearch = () => {
-  const [users, setUsers] = React.useState<UserSearchResultItem[]>([]);
+
+  const navigate = useNavigator();
+
+  const [users, setUsers] = React.useState<IUserSearchResultListItem[]>([]);
 
   const [searchingLogin, setSearchingLogin] = React.useState<string>("");
 
@@ -30,7 +33,11 @@ const useUserSearch = () => {
     setUsers(userDTOs.map(user => ({
       id: user.id,
       login: user.login,
-      avatarUrl: user.profile.avatarUrl
+      avatarUrl: user.profile.avatarUrl,
+      onClick: () => {
+        redirectToUserProfile(user.id);
+        setUsers([]);
+      }
     })));
 
   });
@@ -50,10 +57,15 @@ const useUserSearch = () => {
     search(searchingLogin, abortController);
   }, [searchingLogin]);
 
+  const redirectToUserProfile = (userId: string) => {
+    navigate(`/profile/${userId}`);
+  }
+
   return {
     users,
     searchingLogin,
-    setSearchingLogin
+    setSearchingLogin,
+    redirectToUserProfile
   }
 }
 

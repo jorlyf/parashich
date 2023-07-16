@@ -2,7 +2,7 @@ import React from "react";
 import useUserSearch from "./hooks/useUserSearch";
 import Search from "@components/Search";
 import { useTranslation } from "react-i18next";
-import UserSearchResult from "./components/UserSearchResult";
+import UserSearchResultList from "./components/UserSearchResultList";
 import styles from "./styles.module.scss";
 
 interface UserSearchProps {
@@ -29,9 +29,11 @@ const UserSearch: React.FC<UserSearchProps> = ({ disabled }) => {
         disabled={false}
       />
 
-      <UserSearchResult
-        users={users}
-      />
+      {users.length > 0 &&
+        <UserSearchResultList
+          users={users}
+        />
+      }
     </>
   );
 }

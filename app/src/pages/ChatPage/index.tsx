@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import { MainLayout } from "@layouts/index";
 import useChatPage from "./hooks/useChatPage";
 import Header from "./components/Header";
@@ -8,8 +9,10 @@ import { DialogMessageStatus } from "@entities/index";
 
 const ChatPage: React.FC = () => {
 
+  const params = useParams();
+  const chatId = params.chatId ?? null;
+
   const {
-    isOpenDialogList,
     openDialogList
   } = useChatPage();
 
@@ -43,15 +46,15 @@ const ChatPage: React.FC = () => {
   return (
     <MainLayout>
       <Header
-        isOpenDialogList={isOpenDialogList}
+        isOpenDialogList={chatId === null}
         openDialogList={openDialogList}
       />
-      {isOpenDialogList ?
+      {chatId !== null ?
+        <Dialog />
+        :
         <DialogList
           dialogs={dialogs}
         />
-        :
-        <Dialog />
       }
     </MainLayout>
   );

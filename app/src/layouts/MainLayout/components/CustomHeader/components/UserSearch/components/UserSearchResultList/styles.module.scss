@@ -1,0 +1,20 @@
+.user_search_result_list {
+  display       : flex;
+  flex-direction: column;
+
+  padding: 5px;
+
+  position: absolute;
+
+  top  : 50px;
+  right: 0px;
+
+  width: 190px;
+
+  background-color: var(--highlight-color-4);
+
+  border-bottom-left-radius : 10px;
+  border-bottom-right-radius: 10px;
+
+  gap: 10px;
+}

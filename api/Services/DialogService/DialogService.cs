@@ -16,10 +16,15 @@ public class DialogService : IDialogService
     _UoW = uow;
   }
 
+  public Task CreateGroupDialogAsync(Guid requesterUserId)
+  {
+    throw new NotImplementedException();
+  }
+
   public async Task CreatePrivateDialogAsync(Guid requesterUserId, Guid firstUserId, Guid secondUserId)
   {
     if (requesterUserId != firstUserId)
-      throw new ApiException(403, "Access denied. Requester user id is not first user id");
+      throw new ApiException(403, "Access denied");
 
     Task<User?> firstUserTask = _UoW.UserRepository
       .GetById(firstUserId)
@@ -87,5 +92,10 @@ public class DialogService : IDialogService
     };
 
     return dialogDTO;
+  }
+
+  public Task SendMessageAsync(Guid requesterUserId)
+  {
+    throw new NotImplementedException();
   }
 }

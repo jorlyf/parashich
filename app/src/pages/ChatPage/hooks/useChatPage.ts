@@ -1,19 +1,15 @@
 import React from "react";
+import useNavigator from "@hooks/useNavigator";
 
 const useChatPage = () => {
 
-  const [isOpenDialogList, setIsOpenDialogList] = React.useState(false);
+  const navigate = useNavigator();
 
   const openDialogList = () => {
-    setIsOpenDialogList(true);
-  }
-
-  const closeDialogList = () => {
-    setIsOpenDialogList(false);
+    navigate("/chat");
   }
 
   return {
-    isOpenDialogList,
     openDialogList
   }
 }

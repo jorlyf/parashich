@@ -1,0 +1,21 @@
+.user_search_result_item {
+  display    : flex;
+  align-items: center;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 5px;
+
+  box-shadow: 1px 2px var(--highlight-color);
+
+  border-radius: 10px;
+
+  background-color: var(--app-color);
+
+  img {
+    max-width : 40px;
+    max-height: 40px;
+  }
+}
