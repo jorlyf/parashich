@@ -1,6 +1,6 @@
 import React from "react";
 import UserSearch from "./components/UserSearch";
-import LogoIcon from "@public/Logo.jpg";
+import LogoIcon from "@public/Logo.png";
 import styles from "./styles.module.scss";
 
 interface CustomHeaderProps {
