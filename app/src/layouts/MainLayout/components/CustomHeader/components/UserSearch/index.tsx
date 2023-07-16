@@ -1,5 +1,5 @@
 import React from "react";
-import useUserSearch from "./useUserSearch";
+import useUserSearch from "./hooks/useUserSearch";
 import Search from "@components/Search";
 import { useTranslation } from "react-i18next";
 import UserSearchResult from "./components/UserSearchResult";
