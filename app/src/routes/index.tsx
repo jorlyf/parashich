@@ -3,7 +3,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PrivateRoute from "./PrivateRoute";
 import { useStore } from "@hooks/index";
-import { AuthPage, ChatPage, HomePage } from "@pages/index";
+import useRedirectAfterLogin from "./hooks/useRedirectAfterLogin";
+import { AuthPage, ChatPage, HomePage, ProfilePage } from "@pages/index";
 
 const NavRoutes: React.FC = observer(() => {
 
@@ -11,11 +12,13 @@ const NavRoutes: React.FC = observer(() => {
 
   const isAuthorized = authStore.isAuthorized;
 
+  useRedirectAfterLogin({ isAuthorized });
+
   return (
     <Routes>
       <Route
         path="/login"
-        element={isAuthorized ? <Navigate replace to="/" /> : <AuthPage />}
+        element={<AuthPage />}
       />
 
       <Route
@@ -24,8 +27,13 @@ const NavRoutes: React.FC = observer(() => {
       />
 
       <Route
-        path="/chat"
+        path="/chat/:chatId?"
         element={<PrivateRoute component={<ChatPage />} />}
+      />
+
+      <Route
+        path="/profile/:userId"
+        element={<PrivateRoute component={<ProfilePage />} />}
       />
 
       <Route
