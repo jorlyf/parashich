@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import CustomHeader from "@layouts/MainLayout/components/CustomHeader";
 import useStore from "@hooks/useStore";
 import useNavigator from "@hooks/useNavigator";
+import styles from "../styles.module.scss";
 
 const AuthPage: React.FC = () => {
 
@@ -20,7 +21,9 @@ const AuthPage: React.FC = () => {
   return (
     <MainLayout>
       <CustomHeader />
-      <LoginForm />
+      <div className={styles.page_content}>
+        <LoginForm />
+      </div>
     </MainLayout>
   );
 }

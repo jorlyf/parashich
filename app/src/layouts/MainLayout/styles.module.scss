@@ -8,7 +8,9 @@
   background-color: var(--background-color);
 
   .content {
-    flex    : 1;
-    overflow: hidden;
+    flex          : 1;
+    overflow      : hidden;
+    display       : flex;
+    flex-direction: column;
   }
 }

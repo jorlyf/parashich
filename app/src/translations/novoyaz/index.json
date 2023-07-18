@@ -5,5 +5,13 @@
   "Profile": "Моя параша",
   "Chat": "Шептунка",
   "Settings": "Чето поменять",
-  "User search": "Найти чепуха"
+  "User search": "Найти чепуха",
+  "Friends": "Сокамерники",
+  "Photos": "Фотки",
+  "SendMessage": "Чиркануть",
+  "AddFriend": "Стать корешами",
+  "PendingFriendshipToMe": "Хочет стать корешами",
+  "PendingFriendshipToAnother": "Предложение отправлено",
+  "ConfirmFriendship": "Согласиться",
+  "DeclineFriendship": "Послать нахуй"
 }

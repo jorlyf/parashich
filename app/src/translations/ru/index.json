@@ -5,5 +5,13 @@
   "Profile": "Профиль",
   "Chat": "Чат",
   "Settings": "Настройки",
-  "User search": "Поиск людей"
+  "User search": "Поиск людей",
+  "Friends": "Друзья",
+  "Photos": "Фото",
+  "SendMessage": "Написать",
+  "AddFriend": "Добавить в друзья",
+  "PendingFriendshipToMe": "Предлагает стать друзьями",
+  "PendingFriendship": "Заявка отправлена",
+  "ConfirmFriendship": "Принять",
+  "DeclineFriendship": "Отменить"
 }

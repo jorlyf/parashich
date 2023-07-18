@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import DialogList, { IDialogListItem } from "./components/DialogList";
 import Dialog from "./components/Dialog";
 import { DialogMessageStatus } from "@entities/index";
+import styles from "../styles.module.scss";
 
 const ChatPage: React.FC = () => {
 
@@ -49,13 +50,15 @@ const ChatPage: React.FC = () => {
         isOpenDialogList={chatId === null}
         openDialogList={openDialogList}
       />
-      {chatId !== null ?
-        <Dialog />
-        :
-        <DialogList
-          dialogs={dialogs}
-        />
-      }
+      <div className={styles.page_content}>
+        {chatId !== null ?
+          <Dialog />
+          :
+          <DialogList
+            dialogs={dialogs}
+          />
+        }
+      </div>
     </MainLayout>
   );
 }
