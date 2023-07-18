@@ -1,9 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { LoginData } from "@pages/AuthPage/interfaces";
-import request from "@http/request";
-import { RequestType } from "@http/interfaces";
-import LSService from "@services/LSService";
 import jwt_decode from "jwt-decode";
+import { LoginData } from "@pages/AuthPage/interfaces";
+import LSService from "@services/LSService";
+import AuthService from "@services/AuthService";
 
 class AuthStore {
 
@@ -18,36 +17,20 @@ class AuthStore {
 
   authorize(loginData: LoginData, mode: "login" | "register") {
     if (mode === "login") {
-      runInAction(async () => {
-        const response = await request<string>({
-          url: "Auth/Login",
-          type: RequestType.post,
-          body: loginData
+      runInAction(() => {
+        AuthService.login(
+          loginData, {
+          onSuccess: (token: string) => this.successAuthorize(token),
+          onFailed: () => this.logout()
         });
-
-        if (response.status !== 200) {
-          this.logout();
-          return;
-        }
-
-        const token = response.data;
-        this.successAuthorize(token);
       });
     } else {
-      runInAction(async () => {
-        const response = await request<string>({
-          url: "Auth/Register",
-          type: RequestType.post,
-          body: loginData
+      runInAction(() => {
+        AuthService.register(
+          loginData, {
+          onSuccess: (token: string) => this.successAuthorize(token),
+          onFailed: () => this.logout()
         });
-
-        if (response.status !== 200) {
-          this.logout();
-          return;
-        }
-
-        const token = response.data;
-        this.successAuthorize(token);
       });
     }
   }
@@ -55,18 +38,11 @@ class AuthStore {
   tokenAuthorize(token: string) {
     this.setWasTokenAuthAttempt(true);
 
-    runInAction(async () => {
-      const response = await request({
-        url: "Auth/TokenLogin",
-        type: RequestType.post
+    runInAction(() => {
+      AuthService.tokenLogin({
+        onSuccess: () => this.successAuthorize(token),
+        onFailed: () => this.logout()
       });
-
-      if (response.status !== 200) {
-        this.logout();
-        return;
-      }
-
-      this.successAuthorize(token);
     });
   }
 

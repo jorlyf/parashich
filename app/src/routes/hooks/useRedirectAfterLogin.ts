@@ -1,5 +1,5 @@
-import useNavigator from "@hooks/useNavigator";
 import React from "react";
+import useNavigator from "@hooks/useNavigator";
 
 interface RedirectAfterLoginHookProps {
   isAuthorized: boolean;
@@ -20,7 +20,6 @@ const useRedirectAfterLogin = ({ isAuthorized }: RedirectAfterLoginHookProps) =>
     if (!wasRedirected && isAuthorized && initPathName.current) {
       setWasRedirected(true);
       navigate(initPathName.current);   
-      console.log(initPathName.current);
     }
   }, [isAuthorized]);
 }
