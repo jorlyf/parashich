@@ -2,6 +2,7 @@ import React from "react";
 import { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import useNavigator from "@hooks/useNavigator";
+import AuthStore from "@stores/AuthStore";
 import ChatIcon from "@public/images/Chat.svg";
 import SettingsIcon from "@public/images/Settings.svg";
 import styles from "../styles.module.scss";
@@ -9,10 +10,11 @@ import styles from "../styles.module.scss";
 type MenuItem = Required<MenuProps>["items"][number];
 
 interface LeftMenuHookProps {
+  authStore: AuthStore;
   isOpen: boolean;
 }
 
-const useLeftMenu = ({ isOpen }: LeftMenuHookProps) => {
+const useLeftMenu = ({ authStore, isOpen }: LeftMenuHookProps) => {
 
   const { t } = useTranslation();
 
@@ -24,36 +26,40 @@ const useLeftMenu = ({ isOpen }: LeftMenuHookProps) => {
         key: "profile",
         label: t("Profile"),
         // icon: <img className={styles.icon} src={HomeIcon} />
+        onClick: () => navigate("/profile")
       },
       {
         key: "chat",
         label: t("Chat"),
-        icon: <img className={styles.icon} src={ChatIcon} />
+        icon: <img className={styles.icon} src={ChatIcon} />,
+        onClick: () => navigate("/chat")
       },
       {
         key: "settings",
         label: t("Settings"),
-        icon: <img className={styles.icon} src={SettingsIcon} />
+        icon: <img className={styles.icon} src={SettingsIcon} />,
+        onClick: () => navigate("/settings")
+      },
+      {
+        key: "logout",
+        label: t("logout"),
+        // icon: <img className={styles.icon} src={} />,
+        onClick: () => authStore.logout()
       }
     ];
   }, [isOpen]);
 
-  const [activeItem, setActiveItem] = React.useState<MenuItem | null>(null);
-
-  React.useEffect(() => {
-    if (!activeItem) return;
-    
-    navigate(activeItem.key.toString());
-  }, [activeItem]);
-
   const selectItem = (itemKey: string) => {
-    const item = items.find(x => x.key === itemKey);
-    setActiveItem(item);
+    const item = items.find(x => x.key === itemKey) ?? null;
+
+    if (!item) return;
+
+    // @ts-expect-error
+    item.onClick();
   }
 
   return {
     items,
-    activeItem,
     selectItem
   }
 }

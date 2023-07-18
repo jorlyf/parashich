@@ -1,5 +1,7 @@
 import React from "react";
 import { Menu } from "antd";
+import { observer } from "mobx-react-lite";
+import useStore from "@hooks/useStore";
 import useLeftMenu from "./hooks/useLeftMenu";
 import styles from "./styles.module.scss";
 
@@ -7,28 +9,25 @@ interface ILeftMenuProps {
   isOpen: boolean;
 }
 
-const LeftMenu: React.FC<ILeftMenuProps> = ({ isOpen }) => {
+const LeftMenu: React.FC<ILeftMenuProps> = observer(({ isOpen }) => {
+
+  const { authStore } = useStore();
 
   const {
     items,
-    activeItem,
     selectItem
-  } = useLeftMenu({ isOpen });
-
-  const handleClick = (key: string) => {
-    selectItem(key);
-  }
+  } = useLeftMenu({ authStore, isOpen });
 
   return (
     <div className={`${styles.left_menu} ${isOpen && styles.active}`}>
       <Menu
         className={styles.menu}
-        activeKey={activeItem?.key?.toString() ?? null}
         items={items}
-        onClick={(x) => handleClick(x.key)}
+        selectedKeys={[]}
+        onClick={(item) => selectItem(item.key)}
       />
     </div>
   );
-}
+});
 
 export default LeftMenu;
