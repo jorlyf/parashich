@@ -9,7 +9,7 @@ interface ProfilePageProps {
 
 const ProfilePage: React.FC<ProfilePageProps> = () => {
 
-  const { userId } = useParams();
+  const { userLogin } = useParams();
 
   return (
     <MainLayout>

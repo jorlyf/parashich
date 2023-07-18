@@ -35,8 +35,9 @@ const useUserSearch = () => {
       login: user.login,
       avatarUrl: user.profile.avatarUrl,
       onClick: () => {
-        redirectToUserProfile(user.id);
+        redirectToUserProfile(user.login);
         setUsers([]);
+        setSearchingLogin("");
       }
     })));
 
@@ -57,8 +58,8 @@ const useUserSearch = () => {
     search(searchingLogin, abortController);
   }, [searchingLogin]);
 
-  const redirectToUserProfile = (userId: string) => {
-    navigate(`/profile/${userId}`);
+  const redirectToUserProfile = (userLogin: string) => {
+    navigate(`/profile/${userLogin}`);
   }
 
   return {

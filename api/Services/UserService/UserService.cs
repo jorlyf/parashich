@@ -27,7 +27,8 @@ public class UserService : IUserService
     Task<User?> findedUserTask = _UoW.UserRepository
       .GetById(userId)
       .AsNoTracking()
-      .Include(user => user.Profile)
+      .Include(user => user.Profile)  
+        .ThenInclude(profile => profile.Photos)
       .FirstOrDefaultAsync()
       ?? throw new ApiException(404, "User not found");
 
@@ -41,7 +42,7 @@ public class UserService : IUserService
       Profile = new()
       {
         UserId = findedUser.Id,
-        AvatarUrl = findedUser.Profile!.AvatarUrl,
+        AvatarUrl = findedUser.Profile!.Photos.Find(photo => photo.Id == findedUser.Profile.AvatarPhotoId)?.Url,
         Status = findedUser.Profile!.Status
       }
     };
@@ -61,6 +62,7 @@ public class UserService : IUserService
       .GetByLoginContains(login, Infrastructure.StringComparisonType.CaseUnsensetive)
       .AsNoTracking()
       .Include(user => user.Profile)
+        .ThenInclude(profile => profile.Photos)
       .ToListAsync();
 
     Task.WaitAll(requesterUserTask, findedUsersTask);
@@ -75,7 +77,7 @@ public class UserService : IUserService
         Profile = new()
         {
           UserId = user.Id,
-          AvatarUrl = user.Profile!.AvatarUrl,
+          AvatarUrl = user.Profile!.Photos.Find(photo => photo.Id == user.Profile.AvatarPhotoId)?.Url,
           Status = user.Profile!.Status
         }
       })

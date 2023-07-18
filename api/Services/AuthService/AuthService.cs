@@ -1,8 +1,10 @@
 using api.Entities;
+using api.Infrastructure;
 using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace api.Services.Implementations;
 
@@ -40,7 +42,7 @@ public class AuthService : IAuthService
 
   public async Task<string> RegisterAsync(string login, string password)
   {
-    if (await (_UoW.UserRepository.IsLoginExist(login)))
+    if (await _UoW.UserRepository.IsLoginExist(login))
     {
       throw new ApiException(400, "Login already in use");
     }
@@ -50,19 +52,14 @@ public class AuthService : IAuthService
     User user = new()
     {
       Login = login,
-      PasswordHash = passwordHash
+      PasswordHash = passwordHash,
+      Profile = new()
+      {
+        CreatedAt = TimeUtils.UTCNow
+      }
     };
 
     await _UoW.UserRepository.AddAsync(user);
-
-    Profile profile = new()
-    {
-      User = user,
-      Status = null,
-      AvatarUrl = null
-    };
-
-    user.Profile = profile;
 
     await _UoW.SaveAsync();
 
