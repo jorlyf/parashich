@@ -1,50 +1,52 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import Avatar from "./components/Avatar";
 import Friends from "./components/Friends";
 import Photos from "./components/Photos";
 import Status from "./components/Status";
 import SendMessageButton from "./components/SendMessageButton";
 import FriendshipButton from "./components/FriendshipButton";
-import styles from "./styles.module.scss";
 import Posts from "./components/Posts";
+import SettingsButton from "./components/SettingsButton";
+import styles from "./styles.module.scss";
 
 interface ProfileProps {
+  isMe: boolean;
   user: any;
 }
 
-const Profile: React.FC<ProfileProps> = ({ user }) => {
+const Profile: React.FC<ProfileProps> = observer(({ isMe, user }) => {
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
-
-        <div className={styles.up}>
-
-          <div className={styles.login_avatar_wrapper}>
-            <span>Login</span>
-            <Avatar url={null} />
-          </div>
-
-          <div className={styles.friends_photos_wrapper}>
-            <Friends friends={null} />
-            <Photos photos={null} />
-          </div>
-
+        <div className={styles.avatar_container}>
+          {isMe && <div></div>}
+          <Avatar url={null} />
         </div>
 
-        <div className={styles.down}>
-          <Status text="пацанский статус" />
+        <Status text="пацанский статус" />
 
-          <div className={styles.buttons}>
+        {isMe ?
+          <div className={styles.my_profile_buttons}>
+            <SettingsButton />
+          </div>
+          :
+          <div className={styles.other_profile_buttons}>
             <SendMessageButton />
             <FriendshipButton />
           </div>
-        </div>
+        }
 
+        <Friends friends={null} />
+
+        <Photos photos={null} />
       </div>
 
-      <Posts />
-    </div>
+      <div className={styles.posts_container}>
+        <Posts posts={null} />
+      </div>
+    </div >
   );
-}
+});
 
 export default Profile;

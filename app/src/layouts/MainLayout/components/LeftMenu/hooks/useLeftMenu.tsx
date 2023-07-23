@@ -2,7 +2,7 @@ import React from "react";
 import { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import useNavigator from "@hooks/useNavigator";
-import AuthStore from "@stores/AuthStore";
+import { AuthStore, UserStore } from "@stores/index";
 import ChatIcon from "@public/images/Chat.svg";
 import SettingsIcon from "@public/images/Settings.svg";
 import styles from "../styles.module.scss";
@@ -11,10 +11,11 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 interface LeftMenuHookProps {
   authStore: AuthStore;
+  userStore: UserStore;
   isOpen: boolean;
 }
 
-const useLeftMenu = ({ authStore, isOpen }: LeftMenuHookProps) => {
+const useLeftMenu = ({ authStore, userStore, isOpen }: LeftMenuHookProps) => {
 
   const { t } = useTranslation();
 
@@ -26,7 +27,7 @@ const useLeftMenu = ({ authStore, isOpen }: LeftMenuHookProps) => {
         key: "profile",
         label: t("Profile"),
         // icon: <img className={styles.icon} src={HomeIcon} />
-        onClick: () => navigate("/profile")
+        onClick: () => navigate(`/profile/${userStore.login}`)
       },
       {
         key: "chat",

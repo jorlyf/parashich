@@ -41,16 +41,6 @@ const Friends: React.FC<FriendsProps> = ({ }) => {
       id: "4",
       login: "admin",
       avatarUrl: null
-    },
-    {
-      id: "5",
-      login: "jorlyf",
-      avatarUrl: null
-    },
-    {
-      id: "6",
-      login: "nastya",
-      avatarUrl: null
     }
   ];
 
@@ -60,18 +50,17 @@ const Friends: React.FC<FriendsProps> = ({ }) => {
 
   return (
     <div className={styles.friends}>
-      <span className={styles.header}>{t("Friends")}</span>
-      <ul className={styles.list}>
+      <span className={styles.title}>{t("Friends")}: {friends.length}</span>
+      <div className={styles.list}>
         {friends.map(friend => (
-          <li
+          <div
             key={friend.id}
             onClick={() => navigateToProfile(friend.login)}
           >
             <AntdAvatar src={friend.avatarUrl ?? DefaultAvatar} />
-            <span>{friend.login}</span>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

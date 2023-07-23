@@ -32,7 +32,7 @@ const NavRoutes: React.FC = observer(() => {
       />
 
       <Route
-        path="/profile/:userId"
+        path="/profile/:userLogin"
         element={<PrivateRoute component={<ProfilePage />} />}
       />
 

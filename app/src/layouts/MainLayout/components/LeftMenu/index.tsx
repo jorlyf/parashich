@@ -11,12 +11,12 @@ interface ILeftMenuProps {
 
 const LeftMenu: React.FC<ILeftMenuProps> = observer(({ isOpen }) => {
 
-  const { authStore } = useStore();
+  const { authStore, userStore } = useStore();
 
   const {
     items,
     selectItem
-  } = useLeftMenu({ authStore, isOpen });
+  } = useLeftMenu({ authStore, userStore, isOpen });
 
   return (
     <div className={`${styles.left_menu} ${isOpen && styles.active}`}>

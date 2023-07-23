@@ -1,13 +1,12 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import jwt_decode from "jwt-decode";
+import { store } from "@hooks/useStore";
 import { LoginData } from "@pages/AuthPage/interfaces";
 import LSService from "@services/LSService";
 import AuthService from "@services/AuthService";
 
 class AuthStore {
 
-  id: string | null = null;
-  login: string | null = null;
   isAuthorized: boolean = false;
   wasTokenAuthAttempt: boolean = false;
 
@@ -17,20 +16,16 @@ class AuthStore {
 
   authorize(loginData: LoginData, mode: "login" | "register") {
     if (mode === "login") {
-      runInAction(() => {
-        AuthService.login(
-          loginData, {
-          onSuccess: (token: string) => this.successAuthorize(token),
-          onFailed: () => this.logout()
-        });
+      AuthService.login(
+        loginData, {
+        onSuccess: (token: string) => this.successAuthorize(token),
+        onFailed: () => this.logout()
       });
     } else {
-      runInAction(() => {
-        AuthService.register(
-          loginData, {
-          onSuccess: (token: string) => this.successAuthorize(token),
-          onFailed: () => this.logout()
-        });
+      AuthService.register(
+        loginData, {
+        onSuccess: (token: string) => this.successAuthorize(token),
+        onFailed: () => this.logout()
       });
     }
   }
@@ -38,11 +33,9 @@ class AuthStore {
   tokenAuthorize(token: string) {
     this.setWasTokenAuthAttempt(true);
 
-    runInAction(() => {
-      AuthService.tokenLogin({
-        onSuccess: () => this.successAuthorize(token),
-        onFailed: () => this.logout()
-      });
+    AuthService.tokenLogin({
+      onSuccess: () => this.successAuthorize(token),
+      onFailed: () => this.logout()
     });
   }
 
@@ -51,15 +44,19 @@ class AuthStore {
 
     const decoded = jwt_decode<{ id: string, login: string }>(token);
 
-    this.id = decoded.id;
-    this.login = decoded.login;
-    this.isAuthorized = true;
+    runInAction(() => {
+      store.userStore.setId(decoded.id);
+      store.userStore.setLogin(decoded.login);
+      this.isAuthorized = true;
+    });
   }
 
   logout() {
-    this.id = null;
-    this.login = null;
-    this.isAuthorized = false;
+    runInAction(() => {
+      store.userStore.setId(null);
+      store.userStore.setLogin(null);
+      this.isAuthorized = false;
+    });
 
     LSService.removeToken();
   }

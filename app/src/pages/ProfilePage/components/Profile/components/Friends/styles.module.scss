@@ -1,26 +1,24 @@
 .friends {
+  display: flex;
+
+  align-items    : center;
+  justify-content: space-between;
+
   width: 100%;
 
-  .header {
-    display: block;
+  box-sizing: border-box;
 
+  padding: 5px 20px;
+
+  .title {
     font-weight: 600;
     text-align : center;
   }
 
   .list {
-    list-style: none;
+    display: flex;
 
-    columns: 3;
-
-    gap: 0px;
-
-    margin : 0px;
-    padding: 0px;
-
-    text-align: center;
-
-    li {
+    div {
       cursor: pointer;
     }
   }

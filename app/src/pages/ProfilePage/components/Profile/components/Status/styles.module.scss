@@ -1,3 +1,7 @@
 .status {
-  
+  display        : flex;
+  justify-content: center;
+  padding        : 5px 20px;
+
+  word-break: break-all;
 }

@@ -33,15 +33,13 @@ const Photos: React.FC<PhotosProps> = () => {
 
   return (
     <div className={styles.photos}>
-      <span className={styles.header}>{t("Photos")}</span>
-
-      <ul className={styles.list}>
+      <div className={styles.list}>
         {photos.map(photo => (
-          <li key={photo.id}>
+          <div key={photo.id}>
             <img src={photo.url ?? DefaultAvatar} />
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
