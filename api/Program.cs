@@ -1,5 +1,6 @@
 using System.Text;
 using api.DbContexts;
+using api.Infrastructure;
 using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Implementations;
@@ -129,5 +130,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+Directories.CreateAll();
 
 app.Run();
