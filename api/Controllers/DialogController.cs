@@ -22,7 +22,7 @@ public class DialogsController : ControllerBase
   [HttpPost]
   public async Task<ActionResult> CreatePrivateDialogAsync([FromBody] CreatePrivateDialogRequestDTO dto)
   {
-    Guid userId = IdentityUtils.GetPrincipalUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalId(User);
     await _dialogService.CreatePrivateDialogAsync(userId, Guid.Parse(dto.FirstUserId), Guid.Parse(dto.SecondUserId));
     return Ok();
   }
@@ -32,7 +32,7 @@ public class DialogsController : ControllerBase
   [Route("{id}")]
   public async Task<ActionResult> GetDialogDTOAsync(string id)
   {
-    Guid userId = IdentityUtils.GetPrincipalUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalId(User);
     DialogDTO dialogDTO = await _dialogService.GetDialogDTOAsync(userId, Guid.Parse(id));
     return Ok(dialogDTO);
   }

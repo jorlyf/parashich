@@ -16,10 +16,10 @@ public class UserService : IUserService
     _UoW = uow;
   }
 
-  public async Task<UserDTO> GetUserDTOByIdAsync(Guid principalUserId, Guid userId)
+  public async Task<UserDTO> GetUserDTOByIdAsync(Guid principalId, Guid userId)
   {
     Task<Profile?> principalProfileTask = _UoW.ProfileRepository
-      .GetById(principalUserId)
+      .GetById(principalId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "User is not exist");
@@ -50,10 +50,10 @@ public class UserService : IUserService
     return userDTO;
   }
 
-  public async Task<List<UserDTO>> GetUserDTOByLoginContainsExceptPrincipalUserAsync(Guid principalUserId, string login)
+  public async Task<List<UserDTO>> GetUserDTOByLoginContainsExceptPrincipalUserAsync(Guid principalId, string login)
   {
     Task<Profile?> principalProfileTask = _UoW.ProfileRepository
-      .GetById(principalUserId)
+      .GetById(principalId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "User is not exist");
@@ -69,7 +69,7 @@ public class UserService : IUserService
     List<User> findedUsers = findedUsersTask.Result!;
 
     List<UserDTO> userDTOs = findedUsers
-      .Where(user => user.Id != principalUserId)
+      .Where(user => user.Id != principalId)
       .Select(user => new UserDTO()
       {
         Id = user.Id,

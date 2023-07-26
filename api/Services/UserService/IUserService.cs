@@ -4,6 +4,6 @@ namespace api.Services.Interfaces;
 
 public interface IUserService
 {
-  public Task<UserDTO> GetUserDTOByIdAsync(Guid principalUserId, Guid userId);
-  public Task<List<UserDTO>> GetUserDTOByLoginContainsExceptPrincipalUserAsync(Guid principalUserId, string login);
+  public Task<UserDTO> GetUserDTOByIdAsync(Guid principalId, Guid userId);
+  public Task<List<UserDTO>> GetUserDTOByLoginContainsExceptPrincipalUserAsync(Guid principalId, string login);
 }

@@ -23,7 +23,7 @@ public class SearchController : ControllerBase
   [Route("Users/{id}")]
   public async Task<ActionResult> SearchUsersByIdAsync([FromRoute] string id)
   {
-    Guid userId = IdentityUtils.GetPrincipalUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalId(User);
     UserDTO userDTO = await _userService.GetUserDTOByIdAsync(userId, Guid.Parse(id));
     return Ok(userDTO);
   }
@@ -33,7 +33,7 @@ public class SearchController : ControllerBase
   [Route("Users")]
   public async Task<ActionResult> SearchUsersByLoginAsync([FromQuery] string login)
   {
-    Guid userId = IdentityUtils.GetPrincipalUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalId(User);
     List<UserDTO> userDTOs = await _userService.GetUserDTOByLoginContainsExceptPrincipalUserAsync(userId, login);
     return Ok(userDTOs);
   }

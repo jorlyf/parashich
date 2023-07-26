@@ -16,14 +16,14 @@ public class DialogService : IDialogService
     _UoW = uow;
   }
 
-  public Task CreateGroupDialogAsync(Guid principalUserId)
+  public Task CreateGroupDialogAsync(Guid principalId)
   {
     throw new NotImplementedException();
   }
 
-  public async Task CreatePrivateDialogAsync(Guid principalUserId, Guid firstUserId, Guid secondUserId)
+  public async Task CreatePrivateDialogAsync(Guid principalId, Guid firstUserId, Guid secondUserId)
   {
-    if (principalUserId != firstUserId)
+    if (principalId != firstUserId)
       throw new ApiException(403, "Access denied");
 
     Task<Profile?> firstProfileTask = _UoW.ProfileRepository
@@ -63,10 +63,10 @@ public class DialogService : IDialogService
     await _UoW.SaveAsync();
   }
 
-  public async Task<DialogDTO> GetDialogDTOAsync(Guid principalUserId, Guid dialogId)
+  public async Task<DialogDTO> GetDialogDTOAsync(Guid principalId, Guid dialogId)
   {
     Task<Profile?> profileTask = _UoW.ProfileRepository
-      .GetById(principalUserId)
+      .GetById(principalId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "User is not exist");
@@ -94,7 +94,7 @@ public class DialogService : IDialogService
     return dialogDTO;
   }
 
-  public Task SendMessageAsync(Guid principalUserId)
+  public Task SendMessageAsync(Guid principalId)
   {
     throw new NotImplementedException();
   }
