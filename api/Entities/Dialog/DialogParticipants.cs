@@ -14,8 +14,8 @@ public class DialogParticipant : IEntity
   public Dialog Dialog { get; set; } = null!;
 
   [Required]
-  public Guid UserId { get; set; }
+  public Guid ProfileId { get; set; }
 
   [Required]
-  public User User { get; set; } = null!;
+  public Profile Profile { get; set; } = null!;
 }

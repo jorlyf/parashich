@@ -6,17 +6,15 @@ namespace api.Entities;
 public class Profile : IEntity
 {
   [Key]
+  [ForeignKey(nameof(User))]
   public Guid Id { get; set; }
-
-  [Required]
-  public Guid UserId { get; set; }
 
   [Required]
   public User User { get; set; } = null!;
 
   public Guid? AvatarPhotoId { get; set; }
 
-  [MaxLength(128)]
+  [StringLength(128)]
   public string? Status { get; set; }
 
   public List<ProfilePost> Posts { get; set; } = null!;

@@ -20,7 +20,7 @@ public class ProfileService : IProfileService
   public async Task<ProfilePhoto> AddPhotoAsync(Guid userId, IFormFile formFile)
   {
     Profile profile = await _UoW.ProfileRepository
-     .GetByUserId(userId)
+     .GetById(userId)
      .Include(profile => profile.Photos)
      .AsNoTracking()
      .FirstOrDefaultAsync()

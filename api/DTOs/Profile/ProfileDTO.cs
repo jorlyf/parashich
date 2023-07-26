@@ -2,7 +2,7 @@ namespace api.DTOs;
 
 public class ProfileDTO
 {
-  public required Guid UserId { get; set; }
+  public required Guid Id { get; set; }
 
   public string? AvatarUrl { get; set; }
 

@@ -16,31 +16,26 @@ const useUserSearch = () => {
   const lastSearchRequestAbortController = React.useRef<AbortController>(null);
 
   const search = useDebounce(async (login: string, abortController: AbortController) => {
+    try {
+      const { data: userDTOs } = await request<UserDTO[]>({
+        url: `Search/Users?login=${login}`,
+        type: RequestType.get,
+        signal: abortController.signal
+      });
 
-    const response = await request<UserDTO[]>({
-      url: `Search/UsersByLogin?login=${login}`,
-      type: RequestType.get,
-      signal: abortController.signal
-    });
-
-    if (response.status !== 200) {
+      setUsers(userDTOs.map(user => ({
+        id: user.id,
+        login: user.login,
+        avatarUrl: user.profile.avatarUrl,
+        onClick: () => {
+          redirectToUserProfile(user.login);
+          setUsers([]);
+          setSearchingLogin("");
+        }
+      })));
+    } catch (error) {
       setUsers([]);
-      return;
     }
-
-    const { data: userDTOs } = response;
-
-    setUsers(userDTOs.map(user => ({
-      id: user.id,
-      login: user.login,
-      avatarUrl: user.profile.avatarUrl,
-      onClick: () => {
-        redirectToUserProfile(user.login);
-        setUsers([]);
-        setSearchingLogin("");
-      }
-    })));
-
   });
 
   React.useEffect(() => {

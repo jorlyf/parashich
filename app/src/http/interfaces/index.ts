@@ -1,4 +1,6 @@
 export enum RequestType {
   get,
-  post
+  post,
+  put,
+  delete
 }

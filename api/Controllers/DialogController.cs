@@ -9,31 +9,30 @@ namespace api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class DialogController : ControllerBase
+public class DialogsController : ControllerBase
 {
   private readonly IDialogService _dialogService;
 
-  public DialogController(DialogService dialogService)
+  public DialogsController(DialogService dialogService)
   {
     _dialogService = dialogService;
   }
 
   [Authorize]
   [HttpPost]
-  [Route("CreatePrivate")]
   public async Task<ActionResult> CreatePrivateDialogAsync([FromBody] CreatePrivateDialogRequestDTO dto)
   {
-    Guid userId = IdentityUtils.GetAuthorizedUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalUserId(User);
     await _dialogService.CreatePrivateDialogAsync(userId, Guid.Parse(dto.FirstUserId), Guid.Parse(dto.SecondUserId));
     return Ok();
   }
 
   [Authorize]
   [HttpGet]
-  [Route("Get")]
+  [Route("{id}")]
   public async Task<ActionResult> GetDialogDTOAsync(string id)
   {
-    Guid userId = IdentityUtils.GetAuthorizedUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalUserId(User);
     DialogDTO dialogDTO = await _dialogService.GetDialogDTOAsync(userId, Guid.Parse(id));
     return Ok(dialogDTO);
   }

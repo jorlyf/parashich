@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import $api from "./api";
 import { RequestType } from "./interfaces";
 import { notification } from "antd";
@@ -14,7 +14,6 @@ interface RequestProps {
 
 interface Response<T> {
   status: number;
-  message: string | null;
   data: T | null;
 }
 
@@ -23,27 +22,54 @@ const request = async <T>({
 }: RequestProps
 ): Promise<Response<T>> => {
 
-  const get = (config: AxiosRequestConfig) => {
+  const httpGet = (config: AxiosRequestConfig) => {
     return $api.get<T>(url, config);
   }
 
-  const post = (config: AxiosRequestConfig) => {
+  const httpPost = (config: AxiosRequestConfig) => {
     return $api.post<T>(url, body, config);
+  }
+
+  const httpPut = (config: AxiosRequestConfig) => {
+    return $api.put<T>(url, body, config);
+  }
+
+  const httpDelete = (config: AxiosRequestConfig) => {
+    return $api.delete<T>(url, config);
   }
 
   const config: AxiosRequestConfig = {
     signal,
-    timeout
+    timeout,
+    validateStatus: (status) => status >= 200 && status < 400
   };
 
-  const method = type === RequestType.get ? get : post;
+  let method: (config: AxiosRequestConfig) => Promise<AxiosResponse<T>> = null;
+
+  switch (type) {
+    case RequestType.get: {
+      method = httpGet;
+      break;
+    }
+    case RequestType.post: {
+      method = httpPost;
+      break;
+    }
+    case RequestType.put: {
+      method = httpPut;
+      break;
+    }
+    case RequestType.delete: {
+      method = httpDelete;
+      break;
+    }
+  }
 
   try {
     const response = await method(config);
 
     return {
       status: response.status,
-      message: null,
       data: response.data
     }
   } catch (error) {
@@ -51,11 +77,11 @@ const request = async <T>({
       notification.error({ message: t("Server is shutdown") });
     }
 
-    return {
-      status: error.response?.data?.status ?? null,
-      message: error.response?.data?.message ?? null,
-      data: null
+    if (error.status === 500) {
+      notification.error({ message: t("Inner server exception has occured") })
     }
+
+    throw error;
   }
 }
 

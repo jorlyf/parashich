@@ -16,44 +16,44 @@ public class UserService : IUserService
     _UoW = uow;
   }
 
-  public async Task<UserDTO> GetUserDTOByIdAsync(Guid requesterUserId, Guid userId)
+  public async Task<UserDTO> GetUserDTOByIdAsync(Guid principalUserId, Guid userId)
   {
-    Task<User?> requesterUserTask = _UoW.UserRepository
-      .GetById(requesterUserId)
+    Task<Profile?> principalProfileTask = _UoW.ProfileRepository
+      .GetById(principalUserId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "User is not exist");
 
-    Task<User?> findedUserTask = _UoW.UserRepository
+    Task<Profile?> findedUserTask = _UoW.ProfileRepository
       .GetById(userId)
       .AsNoTracking()
-      .Include(user => user.Profile)  
-        .ThenInclude(profile => profile.Photos)
+      .Include(profile => profile.User)
+      .Include(profile => profile.Photos)
       .FirstOrDefaultAsync()
       ?? throw new ApiException(404, "User not found");
 
-    Task.WaitAll(requesterUserTask, findedUserTask);
-    User findedUser = findedUserTask.Result!;
+    Task.WaitAll(principalProfileTask, findedUserTask);
+    Profile findedProfile = findedUserTask.Result!;
 
     UserDTO userDTO = new()
     {
-      Id = findedUser.Id,
-      Login = findedUser.Login,
+      Id = findedProfile.Id,
+      Login = findedProfile.User.Login,
       Profile = new()
       {
-        UserId = findedUser.Id,
-        AvatarUrl = findedUser.Profile!.Photos.Find(photo => photo.Id == findedUser.Profile.AvatarPhotoId)?.Url,
-        Status = findedUser.Profile!.Status
+        Id = findedProfile.Id,
+        AvatarUrl = findedProfile.Photos.Find(photo => photo.Id == findedProfile.AvatarPhotoId)?.Url,
+        Status = findedProfile.Status
       }
     };
 
     return userDTO;
   }
 
-  public async Task<List<UserDTO>> GetUserDTOByLoginContainsAsync(Guid requesterUserId, string login)
+  public async Task<List<UserDTO>> GetUserDTOByLoginContainsExceptPrincipalUserAsync(Guid principalUserId, string login)
   {
-    Task<User?> requesterUserTask = _UoW.UserRepository
-      .GetById(requesterUserId)
+    Task<Profile?> principalProfileTask = _UoW.ProfileRepository
+      .GetById(principalUserId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "User is not exist");
@@ -65,20 +65,20 @@ public class UserService : IUserService
         .ThenInclude(profile => profile.Photos)
       .ToListAsync();
 
-    Task.WaitAll(requesterUserTask, findedUsersTask);
+    Task.WaitAll(principalProfileTask, findedUsersTask);
     List<User> findedUsers = findedUsersTask.Result!;
 
     List<UserDTO> userDTOs = findedUsers
-      .Where(user => user.Id != requesterUserId)
+      .Where(user => user.Id != principalUserId)
       .Select(user => new UserDTO()
       {
         Id = user.Id,
         Login = user.Login,
         Profile = new()
         {
-          UserId = user.Id,
-          AvatarUrl = user.Profile!.Photos.Find(photo => photo.Id == user.Profile.AvatarPhotoId)?.Url,
-          Status = user.Profile!.Status
+          Id = user.Profile.Id,
+          AvatarUrl = user.Profile.Photos.Find(photo => photo.Id == user.Profile.AvatarPhotoId)?.Url,
+          Status = user.Profile.Status
         }
       })
       .ToList();

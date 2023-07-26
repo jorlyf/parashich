@@ -20,21 +20,21 @@ public class SearchController : ControllerBase
 
   [Authorize]
   [HttpGet]
-  [Route("UserById")]
-  public async Task<ActionResult> SearchUsersByIdAsync(string id)
+  [Route("Users/{id}")]
+  public async Task<ActionResult> SearchUsersByIdAsync([FromRoute] string id)
   {
-    Guid userId = IdentityUtils.GetAuthorizedUserId(User);
+    Guid userId = IdentityUtils.GetPrincipalUserId(User);
     UserDTO userDTO = await _userService.GetUserDTOByIdAsync(userId, Guid.Parse(id));
     return Ok(userDTO);
   }
 
   [Authorize]
   [HttpGet]
-  [Route("UsersByLogin")]
-  public async Task<ActionResult> SearchUsersByLoginAsync(string login)
+  [Route("Users")]
+  public async Task<ActionResult> SearchUsersByLoginAsync([FromQuery] string login)
   {
-    Guid userId = IdentityUtils.GetAuthorizedUserId(User);
-    List<UserDTO> userDTOs = await _userService.GetUserDTOByLoginContainsAsync(userId, login);
+    Guid userId = IdentityUtils.GetPrincipalUserId(User);
+    List<UserDTO> userDTOs = await _userService.GetUserDTOByLoginContainsExceptPrincipalUserAsync(userId, login);
     return Ok(userDTOs);
   }
 }

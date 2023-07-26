@@ -8,13 +8,13 @@ public class DialogRepository : RepositoryBase<Dialog>
 {
   public DialogRepository(DataContext context) : base(context) { }
 
-  public IQueryable<Dialog> GetPrivateByUsersIds(Guid firstUserId, Guid secondUserId)
+  public IQueryable<Dialog> GetPrivateByProfileIds(Guid firstUserId, Guid secondUserId)
   {
     return Set
       .Where(dialog => dialog.Type == DialogType.Private)
       .Where(dialog => dialog.Participants.Count() == 2)
       .Where(dialog => dialog.Participants
-        .All(participant => participant.UserId == firstUserId || participant.UserId == secondUserId)
+        .All(participant => participant.ProfileId == firstUserId || participant.ProfileId == secondUserId)
       );
   }
 
@@ -25,13 +25,13 @@ public class DialogRepository : RepositoryBase<Dialog>
       .Where(dialog => dialog.Type == DialogType.Private)
       .Where(dialog => dialog.Participants.Count() == 2)
       .Where(dialog => dialog.Participants
-        .All(participant => participant.UserId == firstUserId || participant.UserId == secondUserId)
+        .All(participant => participant.ProfileId == firstUserId || participant.ProfileId == secondUserId)
       )
       .FirstOrDefaultAsync() != null;
   }
 
-  public bool IsDialogParticipantsContainsUserId(Dialog dialog, Guid userId)
+  public bool IsDialogParticipantsContainsProfileId(Dialog dialog, Guid userId)
   {
-    return dialog.Participants.Any(participant => participant.UserId == userId);
+    return dialog.Participants.Any(participant => participant.ProfileId == userId);
   }
 }

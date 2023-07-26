@@ -18,12 +18,12 @@ public class UserSettingsController : ControllerBase
   }
 
   [Authorize]
-  [HttpPost]
-  [Route("ChangePassword")]
-  public async Task<ActionResult> ChangePasswordAsync(string password)
+  [HttpPut]
+  [Route("Password")]
+  public async Task<ActionResult> ChangePasswordAsync([FromBody] string password)
   {
-    Guid userId = IdentityUtils.GetAuthorizedUserId(User);
-    await _userSettingsService.ChangePasswordAsync(userId, password);
+    Guid principalUserId = IdentityUtils.GetPrincipalUserId(User);
+    await _userSettingsService.ChangePasswordAsync(principalUserId, password);
     return Ok();
   }
 }
