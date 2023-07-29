@@ -1,9 +1,9 @@
 import CreatePrivateDialogRequestDTO from "./Dialog/CreatePrivateDialogRequestDTO";
 import ProfileDTO from "./Profile/ProfileDTO";
-import UserDTO from "./User/UserDTO";
+import ProfileSearchResponseDTO from "./Profile/ProfileSearchResponseDTO";
 
 export {
   CreatePrivateDialogRequestDTO,
   ProfileDTO,
-  UserDTO
+  ProfileSearchResponseDTO
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { useDebounce, useNavigator } from "@hooks/index";
 import request from "@http/request";
 import { RequestType } from "@http/interfaces";
-import { UserDTO } from "@dtos/index";
+import { ProfileSearchResponseDTO } from "@dtos/index";
 import { IUserSearchResultListItem } from "../components/UserSearchResultList";
 
 const useUserSearch = () => {
@@ -17,18 +17,18 @@ const useUserSearch = () => {
 
   const search = useDebounce(async (login: string, abortController: AbortController) => {
     try {
-      const { data: userDTOs } = await request<UserDTO[]>({
-        url: `Search/Users?login=${login}`,
+      const { data: profileDTOs } = await request<ProfileSearchResponseDTO[]>({
+        url: `Search/Profiles?login=${login}`,
         type: RequestType.get,
         signal: abortController.signal
       });
 
-      setUsers(userDTOs.map(user => ({
-        id: user.id,
-        login: user.login,
-        avatarUrl: user.profile.avatarUrl,
+      setUsers(profileDTOs.map(profile => ({
+        id: profile.id,
+        login: profile.login,
+        avatarUrl: profile.avatarUrl,
         onClick: () => {
-          redirectToUserProfile(user.login);
+          redirectToUserProfile(profile.login);
           setUsers([]);
           setSearchingLogin("");
         }

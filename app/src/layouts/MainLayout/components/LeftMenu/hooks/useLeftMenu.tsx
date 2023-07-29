@@ -13,9 +13,10 @@ interface LeftMenuHookProps {
   authStore: AuthStore;
   userStore: UserStore;
   isOpen: boolean;
+  close: () => void;
 }
 
-const useLeftMenu = ({ authStore, userStore, isOpen }: LeftMenuHookProps) => {
+const useLeftMenu = ({ authStore, userStore, isOpen, close }: LeftMenuHookProps) => {
 
   const { t } = useTranslation();
 
@@ -27,25 +28,25 @@ const useLeftMenu = ({ authStore, userStore, isOpen }: LeftMenuHookProps) => {
         key: "profile",
         label: t("Profile"),
         // icon: <img className={styles.icon} src={HomeIcon} />
-        onClick: () => navigate(`/profile/${userStore.login}`)
+        onClick: () => applyAndClose(() => navigate(`/profile/${userStore.login}`))
       },
       {
         key: "chat",
         label: t("Chat"),
         icon: <img className={styles.icon} src={ChatIcon} />,
-        onClick: () => navigate("/chat")
+        onClick: () => applyAndClose(() => navigate("/chat"))
       },
       {
         key: "settings",
         label: t("Settings"),
         icon: <img className={styles.icon} src={SettingsIcon} />,
-        onClick: () => navigate("/settings")
+        onClick: () => applyAndClose(() => navigate("/settings"))
       },
       {
         key: "logout",
         label: t("logout"),
         // icon: <img className={styles.icon} src={} />,
-        onClick: () => authStore.logout()
+        onClick: () => applyAndClose(() => authStore.logout())
       }
     ];
   }, [isOpen]);
@@ -57,6 +58,11 @@ const useLeftMenu = ({ authStore, userStore, isOpen }: LeftMenuHookProps) => {
 
     // @ts-expect-error
     item.onClick();
+  }
+
+  const applyAndClose = (callback: () => void) => {
+    callback();
+    close();
   }
 
   return {

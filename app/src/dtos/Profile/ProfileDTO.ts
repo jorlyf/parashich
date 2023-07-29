@@ -1,5 +1,6 @@
 export default interface ProfileDTO {
-  userId: string;
+  id: string;
+  login: string;
   avatarUrl: string | null;
   status: string | null;
 }

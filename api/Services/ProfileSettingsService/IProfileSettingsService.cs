@@ -2,5 +2,5 @@ namespace api.Services.Interfaces;
 
 public interface IProfileSettingsService
 {
-  public Task ChangeAvatarAsync(Guid userId);
+  public Task<string> UploadAvatarAsync(Guid principalId, IFormFile file);
 }

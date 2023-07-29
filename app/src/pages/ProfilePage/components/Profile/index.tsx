@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
+import ProfileStore from "@pages/ProfilePage/stores/ProfileStore";
 import Avatar from "./components/Avatar";
 import Friends from "./components/Friends";
 import Photos from "./components/Photos";
@@ -7,28 +8,31 @@ import Status from "./components/Status";
 import SendMessageButton from "./components/SendMessageButton";
 import FriendshipButton from "./components/FriendshipButton";
 import Posts from "./components/Posts";
-import SettingsButton from "./components/SettingsButton";
+import Settings from "./components/Settings";
 import styles from "./styles.module.scss";
 
 interface ProfileProps {
-  isMe: boolean;
-  user: any;
+  store: ProfileStore;
 }
 
-const Profile: React.FC<ProfileProps> = observer(({ isMe, user }) => {
+const Profile: React.FC<ProfileProps> = observer(({ store }) => {
+
+  const isMe = store.isMe;
+
+  const profile = store.profile;
+
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
         <div className={styles.avatar_container}>
-          {isMe && <div></div>}
-          <Avatar url={null} />
+          <Avatar url={profile.avatarUrl} />
         </div>
 
-        <Status text="пацанский статус" />
+        <Status text={profile.status} />
 
         {isMe ?
           <div className={styles.my_profile_buttons}>
-            <SettingsButton />
+            <Settings setAvatarUrl={(url) => profile.setAvatarUrl(url)} />
           </div>
           :
           <div className={styles.other_profile_buttons}>

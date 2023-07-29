@@ -6,6 +6,7 @@ using api.Repositories;
 using api.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -77,7 +78,11 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<HashService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<DialogService>();
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<FileSavingService>();
+builder.Services.AddScoped<PhotoSavingService>();
+builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<ProfileSettingsService>();
+builder.Services.AddScoped<ProfileSearchService>();
 
 builder.Services.AddScoped<UnitOfWork>();
 #endregion
@@ -122,6 +127,14 @@ app.UseExceptionHandler(config =>
   {
     return ExceptionMiddleware.HandleExceptionAsync(context);
   });
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+  FileProvider = new PhysicalFileProvider(
+    Path.Combine(builder.Environment.ContentRootPath, "Data")),
+  RequestPath = "/api/Data",
+  ServeUnknownFileTypes = true
 });
 
 app.UseHttpsRedirection();

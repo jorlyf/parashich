@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./styles.module.scss";
 
 interface StatusProps {
-  text: string | null;
+  text?: string;
 }
 
 const Status: React.FC<StatusProps> = ({ text }) => {

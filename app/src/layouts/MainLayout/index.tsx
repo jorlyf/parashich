@@ -12,7 +12,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   const {
     isOpenLeftMenu,
-    toggleLeftMenu
+    toggleLeftMenu,
+    closeLeftMenu
   } = useMainLayout();
 
   return (
@@ -20,6 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <div className={styles.content}>
         <LeftMenu
           isOpen={isOpenLeftMenu}
+          close={closeLeftMenu}
         />
         {children}
       </div>

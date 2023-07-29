@@ -7,16 +7,17 @@ import styles from "./styles.module.scss";
 
 interface ILeftMenuProps {
   isOpen: boolean;
+  close: () => void;
 }
 
-const LeftMenu: React.FC<ILeftMenuProps> = observer(({ isOpen }) => {
+const LeftMenu: React.FC<ILeftMenuProps> = observer(({ isOpen, close }) => {
 
   const { authStore, userStore } = useStore();
 
   const {
     items,
     selectItem
-  } = useLeftMenu({ authStore, userStore, isOpen });
+  } = useLeftMenu({ authStore, userStore, isOpen, close });
 
   return (
     <div className={`${styles.left_menu} ${isOpen && styles.active}`}>

@@ -19,7 +19,8 @@
     box-shadow: 1px 4px 3px var(--highlight-color);
 
     .avatar_container {
-      height: 180px;
+      position: relative;
+      height  : 180px;
     }
 
     .my_profile_buttons {

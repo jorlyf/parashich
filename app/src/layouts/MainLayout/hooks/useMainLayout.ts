@@ -8,9 +8,14 @@ const useMainLayout = () => {
     setIsOpenLeftMenu(prev => !prev);
   }
 
+  const closeLeftMenu = () => {
+    setIsOpenLeftMenu(false);
+  }
+
   return {
     isOpenLeftMenu,
-    toggleLeftMenu
+    toggleLeftMenu,
+    closeLeftMenu
   }
 }
 

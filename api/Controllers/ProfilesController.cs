@@ -20,11 +20,31 @@ public class ProfilesController : ControllerBase
 
   [Authorize]
   [HttpGet]
-  [Route("")]
-  public async Task<ActionResult> GetProfileByUserLoginAsync([FromQuery] string login)
+  [Route("IdByLogin")]
+  public async Task<ActionResult> GetProfileIdByLoginAsync([FromQuery] string login)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
-    ProfileDTO profileDTO = await _profileService.GetProfileByUserLoginAsync(principalId, login);
+    Guid profileId = await _profileService.GetProfileIdByLoginAsync(principalId, login);
+    return Ok(profileId);
+  }
+
+  [Authorize]
+  [HttpGet]
+  [Route("{id}")]
+  public async Task<ActionResult> GetProfileDTOByIdAsync([FromRoute] string id)
+  {
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    ProfileDTO profileDTO = await _profileService.GetProfileDTOByIdAsync(principalId, Guid.Parse(id));
+    return Ok(profileDTO);
+  }
+
+  [Authorize]
+  [HttpGet]
+  [Route("")]
+  public async Task<ActionResult> GetProfileDTOByLoginAsync([FromQuery] string login)
+  {
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    ProfileDTO profileDTO = await _profileService.GetProfileByLoginAsync(principalId, login);
     return Ok(profileDTO);
   }
 }

@@ -10,6 +10,7 @@ const getBaseUrl = () => {
 }
 
 export const BASE_URL = getBaseUrl();
+export const BASE_URL_DATA = `${BASE_URL}\\Data`;
 
 const $api = axios.create({
   baseURL: BASE_URL

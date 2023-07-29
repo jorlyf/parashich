@@ -1,10 +1,10 @@
 namespace api.DTOs;
 
-public class UserDTO
+public class ProfileSearchResponseDTO
 {
   public required Guid Id { get; set; }
 
   public required string Login { get; set; }
 
-  public required ProfileDTO Profile { get; set; }
+  public string? AvatarUrl { get; set; }
 }
