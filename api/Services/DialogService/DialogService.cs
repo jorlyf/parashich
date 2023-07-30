@@ -21,28 +21,15 @@ public class DialogService : IDialogService
     throw new NotImplementedException();
   }
 
-  public async Task CreatePrivateDialogAsync(Guid principalId, Guid firstUserId, Guid secondUserId)
+  public async Task CreatePrivateDialogAsync(Guid principalId, Guid secondUserId)
   {
-    if (principalId != firstUserId)
-      throw new ApiException(403, "Access denied");
-
-    Task<Profile?> firstProfileTask = _UoW.ProfileRepository
-      .GetById(firstUserId)
+    Profile secondProfile = await _UoW.ProfileRepository
+      .GetById(secondUserId)
       .AsNoTracking()
       .FirstOrDefaultAsync()
-      ?? throw new ApiException(400, "User is not exist");
+      ?? throw new ApiException(400, "Profile is not exist");
 
-    Task<Profile?> secondProfileTask = _UoW.ProfileRepository
-    .GetById(secondUserId)
-    .AsNoTracking()
-    .FirstOrDefaultAsync()
-    ?? throw new ApiException(400, "User is not exist");
-
-    Task.WaitAll(firstProfileTask, secondProfileTask);
-    Profile firstProfile = firstProfileTask.Result!;
-    Profile secondProfile = secondProfileTask.Result!;
-
-    if (await _UoW.DialogRepository.IsPrivateExist(firstProfile.Id, secondProfile.Id))
+    if (await _UoW.DialogRepository.IsPrivateExist(principalId, secondProfile.Id))
       throw new ApiException(400, "Private dialog already exists. It is impossible to create a duplicate");
 
     Dialog dialog = new()
@@ -52,7 +39,7 @@ public class DialogService : IDialogService
     await _UoW.DialogRepository.AddAsync(dialog);
 
     List<DialogParticipant> participants = new() {
-      new() { DialogId = dialog.Id, ProfileId = firstProfile.Id },
+      new() { DialogId = dialog.Id, ProfileId = principalId },
       new() { DialogId = dialog.Id, ProfileId = secondProfile.Id }
     };
 
@@ -65,25 +52,15 @@ public class DialogService : IDialogService
 
   public async Task<DialogDTO> GetDialogDTOAsync(Guid principalId, Guid dialogId)
   {
-    Task<Profile?> profileTask = _UoW.ProfileRepository
-      .GetById(principalId)
-      .AsNoTracking()
-      .FirstOrDefaultAsync()
-      ?? throw new ApiException(400, "User is not exist");
-
-    Task<Dialog?> dialogTask = _UoW.DialogRepository
+    Dialog dialog = await _UoW.DialogRepository
       .GetById(dialogId)
       .AsNoTracking()
       .Include(dialog => dialog.Participants)
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "Dialog is not exist");
 
-    Task.WaitAll(profileTask, dialogTask);
-    Profile user = profileTask.Result!;
-    Dialog dialog = dialogTask.Result!;
-
-    if (!_UoW.DialogRepository.IsDialogParticipantsContainsProfileId(dialog, user.Id))
-      throw new ApiException(404, "Not found");
+    if (!_UoW.DialogRepository.IsDialogParticipantsContainsProfileId(dialog, principalId))
+      throw new ApiException(403, "Access denied");
 
     DialogDTO dialogDTO = new()
     {

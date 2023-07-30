@@ -1,5 +1,6 @@
 using System.Text;
 using api.DbContexts;
+using api.Entities;
 using api.Infrastructure;
 using api.Infrastructure.Exceptions;
 using api.Repositories;
@@ -55,21 +56,37 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services
   .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddJwtBearer(options =>
-{
-  string? jwtKey = builder.Configuration["Jwt:Key"] ??
-   throw new Exception("Jwt:Key is not defined in a config");
-  options.RequireHttpsMetadata = false;
-  options.SaveToken = true;
-  options.TokenValidationParameters = new TokenValidationParameters()
   {
-    ClockSkew = TimeSpan.Zero,
-    RequireAudience = false,
-    ValidateIssuer = false,
-    ValidateAudience = false,
-    ValidateLifetime = true,
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-  };
-});
+    string jwtKey = builder.Configuration["Jwt:Key"] ??
+     throw new Exception("Jwt:Key is not defined in a config");
+
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+      ClockSkew = TimeSpan.Zero,
+      RequireAudience = false,
+      ValidateIssuer = false,
+      ValidateAudience = false,
+      ValidateLifetime = true,
+      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+    options.Events = new JwtBearerEvents()
+    {
+      OnTokenValidated = async (context) =>
+      {
+        Guid userId = Guid.Parse(context.Principal!.Claims.FirstOrDefault(x => x.Type == "id")!.Value);
+
+        DbContext dbContext = context.HttpContext.RequestServices.GetRequiredService<DataContext>();
+
+        bool isUserExist = await dbContext.Set<User>().AnyAsync(user => user.Id == userId);
+        if (!isUserExist)
+        {
+          context.Fail("Principal is not exist");
+        }
+      }
+    };
+  });
 
 #region Custom services
 builder.Services.AddSingleton<TokenService>();

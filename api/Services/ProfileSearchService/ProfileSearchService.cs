@@ -18,21 +18,12 @@ public class ProfileSearchService : IProfileSearchService
 
   public async Task<List<ProfileSearchResponseDTO>> GetProfileSearchResponseDTOByLoginContainsExceptPrincipalProfileAsync(Guid principalId, string login)
   {
-    Task<Profile?> principalProfileTask = _UoW.ProfileRepository
-     .GetById(principalId)
-     .AsNoTracking()
-     .FirstOrDefaultAsync()
-     ?? throw new ApiException(400, "User is not exist");
-
-    Task<List<User>> findedUsersTask = _UoW.UserRepository
+    List<User> findedUsers = await _UoW.UserRepository
       .GetByLoginContains(login, Infrastructure.StringComparisonType.CaseUnsensetive)
       .AsNoTracking()
       .Include(user => user.Profile)
         .ThenInclude(profile => profile.Photos)
       .ToListAsync();
-
-    Task.WaitAll(principalProfileTask, findedUsersTask);
-    List<User> findedUsers = findedUsersTask.Result!;
 
     List<ProfileSearchResponseDTO> searchDTO = findedUsers
       .Where(user => user.Id != principalId)

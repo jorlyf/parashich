@@ -20,10 +20,11 @@ public class DialogsController : ControllerBase
 
   [Authorize]
   [HttpPost]
-  public async Task<ActionResult> CreatePrivateDialogAsync([FromBody] CreatePrivateDialogRequestDTO dto)
+  [Route("/Private/{id}")]
+  public async Task<ActionResult> CreatePrivateDialogAsync([FromRoute] string id)
   {
-    Guid userId = IdentityUtils.GetPrincipalId(User);
-    await _dialogService.CreatePrivateDialogAsync(userId, Guid.Parse(dto.FirstUserId), Guid.Parse(dto.SecondUserId));
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    await _dialogService.CreatePrivateDialogAsync(principalId, Guid.Parse(id));
     return Ok();
   }
 
@@ -32,8 +33,8 @@ public class DialogsController : ControllerBase
   [Route("{id}")]
   public async Task<ActionResult<DialogDTO>> GetDialogDTOAsync(string id)
   {
-    Guid userId = IdentityUtils.GetPrincipalId(User);
-    DialogDTO dialogDTO = await _dialogService.GetDialogDTOAsync(userId, Guid.Parse(id));
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    DialogDTO dialogDTO = await _dialogService.GetDialogDTOAsync(principalId, Guid.Parse(id));
     return Ok(dialogDTO);
   }
 }
