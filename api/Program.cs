@@ -123,10 +123,7 @@ else
 
 app.UseExceptionHandler(config =>
 {
-  config.Run(context =>
-  {
-    return ExceptionMiddleware.HandleExceptionAsync(context);
-  });
+  config.Run(context => ExceptionMiddleware.HandleExceptionAsync(context));
 });
 
 app.UseStaticFiles(new StaticFileOptions

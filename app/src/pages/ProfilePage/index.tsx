@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
-import { useStore } from "@hooks/index";
+import { useNavigator, useStore } from "@hooks/index";
 import MainLayout from "@layouts/MainLayout";
 import CustomHeader from "@layouts/MainLayout/components/CustomHeader";
 import Profile from "./components/Profile";
@@ -12,18 +12,23 @@ import { RequestType } from "@http/interfaces";
 
 const ProfilePage: React.FC = observer(() => {
 
+  const navigate = useNavigator();
+
   const { userStore } = useStore();
 
   const { userLogin } = useParams();
 
   const [profileId, setProfileId] = React.useState<string>();
+  const [profileLoadingError, setProfileLoadingError] = React.useState<any>();
 
   const [profileStore, setProfileStore] = React.useState<ProfileStore>();
 
   React.useEffect(() => {
-    if (!profileId) return;
-
-    setProfileStore(new ProfileStore(profileId, userStore.id));
+    if (!profileId) {
+      setProfileStore(undefined);
+    } else {
+      setProfileStore(new ProfileStore(profileId, userStore.id));
+    }
   }, [profileId]);
 
   const fetchProfileIdByLogin = async (login: string) => {
@@ -36,9 +41,9 @@ const ProfilePage: React.FC = observer(() => {
       });
 
       setProfileId(id);
-
     } catch (error) {
       setProfileId(null);
+      setProfileLoadingError(error);
     }
   }
 
@@ -47,6 +52,11 @@ const ProfilePage: React.FC = observer(() => {
 
     fetchProfileIdByLogin(userLogin);
   }, [userLogin]);
+
+  if (profileLoadingError) {
+    navigate("/");
+    return <></>;
+  }
 
   if (!profileStore) {
     return (

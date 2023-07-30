@@ -20,19 +20,20 @@ public class ProfileSettingsController : ControllerBase
   [Authorize]
   [HttpPost]
   [Route("Avatar")]
-  public async Task<string> UploadAvatarAsync([FromForm] IFormFile file)
+  public async Task<ActionResult<string>> UploadAvatarAsync([FromForm] IFormFile file)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
     string avatarUrl = await _profileSettingsService.UploadAvatarAsync(principalId, file);
-    return avatarUrl;
+    return Ok(avatarUrl);
   }
 
   [Authorize]
   [HttpPut]
   [Route("Avatar/{id}")]
-  public async Task<string> SetAvatarPhotoIdAsync([FromRoute] string id) // set avatar photo id
+  public async Task<ActionResult<string>> SetAvatarPhotoIdAsync([FromRoute] string id) // set avatar photo id
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
-    throw new NotImplementedException();
+    string avatarUrl = await _profileSettingsService.SetAvatarIdAsync(principalId, Guid.Parse(id));
+    return Ok(avatarUrl);
   }
 }

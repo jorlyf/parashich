@@ -17,6 +17,35 @@ public class ProfileSettingsService : IProfileSettingsService
     _photoSavingService = photoSavingService;
   }
 
+  public Task DeletePhotoAsync(Guid principalId, Guid photoId)
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<string> SetAvatarIdAsync(Guid principalId, Guid photoId)
+  {
+    Task<Profile?> principalProfileTask = _UoW.ProfileRepository
+      .GetById(principalId)
+      .FirstOrDefaultAsync()
+      ?? throw new ApiException(400, "Principal is not exist");
+
+    Task<ProfilePhoto?> photoTask = _UoW.ProfileRepository
+      .GetById(principalId)
+      .Select(profile => profile.Photos.First(photo => photo.Id == photoId))
+      .FirstOrDefaultAsync()
+      ?? throw new ApiException(400, "Photo is not exist");
+
+    Profile principalProfile = principalProfileTask.Result!;
+    ProfilePhoto photo = photoTask.Result!;
+
+    principalProfile.AvatarPhotoId = photoId;
+
+    _UoW.ProfileRepository.Update(principalProfile);
+    await _UoW.SaveAsync();
+
+    return photo.Url;
+  }
+
   public async Task<string> UploadAvatarAsync(Guid principalId, IFormFile file)
   {
     Profile principalProfile = await _UoW.ProfileRepository

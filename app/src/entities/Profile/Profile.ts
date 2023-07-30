@@ -38,6 +38,10 @@ class Profile {
   setAvatarUrl(url: string) {
     this.avatarUrl = url;
   }
+
+  setStatus(text: string) {
+    this.status = text;
+  }
 }
 
 export default Profile;

@@ -30,7 +30,7 @@ public class DialogsController : ControllerBase
   [Authorize]
   [HttpGet]
   [Route("{id}")]
-  public async Task<ActionResult> GetDialogDTOAsync(string id)
+  public async Task<ActionResult<DialogDTO>> GetDialogDTOAsync(string id)
   {
     Guid userId = IdentityUtils.GetPrincipalId(User);
     DialogDTO dialogDTO = await _dialogService.GetDialogDTOAsync(userId, Guid.Parse(id));

@@ -4,7 +4,6 @@ using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace api.Services.Implementations;
 

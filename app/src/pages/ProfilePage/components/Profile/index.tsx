@@ -32,7 +32,11 @@ const Profile: React.FC<ProfileProps> = observer(({ store }) => {
 
         {isMe ?
           <div className={styles.my_profile_buttons}>
-            <Settings setAvatarUrl={(url) => profile.setAvatarUrl(url)} />
+            <Settings
+              setAvatarUrl={(url) => profile.setAvatarUrl(url)}
+              status={profile.status}
+              setStatus={(text) => profile.setStatus(text)}
+            />
           </div>
           :
           <div className={styles.other_profile_buttons}>

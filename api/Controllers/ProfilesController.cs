@@ -21,7 +21,7 @@ public class ProfilesController : ControllerBase
   [Authorize]
   [HttpGet]
   [Route("IdByLogin")]
-  public async Task<ActionResult> GetProfileIdByLoginAsync([FromQuery] string login)
+  public async Task<ActionResult<Guid>> GetProfileIdByLoginAsync([FromQuery] string login)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
     Guid profileId = await _profileService.GetProfileIdByLoginAsync(principalId, login);
@@ -31,7 +31,7 @@ public class ProfilesController : ControllerBase
   [Authorize]
   [HttpGet]
   [Route("{id}")]
-  public async Task<ActionResult> GetProfileDTOByIdAsync([FromRoute] string id)
+  public async Task<ActionResult<ProfileDTO>> GetProfileDTOByIdAsync([FromRoute] string id)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
     ProfileDTO profileDTO = await _profileService.GetProfileDTOByIdAsync(principalId, Guid.Parse(id));
@@ -41,7 +41,7 @@ public class ProfilesController : ControllerBase
   [Authorize]
   [HttpGet]
   [Route("")]
-  public async Task<ActionResult> GetProfileDTOByLoginAsync([FromQuery] string login)
+  public async Task<ActionResult<ProfileDTO>> GetProfileDTOByLoginAsync([FromQuery] string login)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
     ProfileDTO profileDTO = await _profileService.GetProfileByLoginAsync(principalId, login);

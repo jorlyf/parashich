@@ -27,18 +27,17 @@ public class ProfileService : IProfileService
       .FirstOrDefaultAsync()
       ?? throw new ApiException(400, "Principal is not exist");
 
-    Task<User?> findedUserTask = _UoW.UserRepository
+    Task<Guid> findedUserIdTask = _UoW.UserRepository
       .GetByLogin(login)
-      .Include(user => user.Profile)
-        .ThenInclude(profile => profile.Photos)
       .AsNoTracking()
+      .Select(user => user.Id)
       .FirstOrDefaultAsync()
       ?? throw new ApiException(404, "Profile is not exist");
 
-    Task.WaitAll(principalProfileTask, findedUserTask);
-    User findedUser = findedUserTask.Result!;
+    Task.WaitAll(principalProfileTask, findedUserIdTask);
+    Guid findedUserId = findedUserIdTask.Result;
 
-    return findedUser.Id;
+    return findedUserId;
   }
 
   public async Task<ProfileDTO> GetProfileByLoginAsync(Guid principalId, string login)
@@ -48,7 +47,7 @@ public class ProfileService : IProfileService
       .Include(profile => profile.Photos)
       .AsNoTracking()
       .FirstOrDefaultAsync()
-      ?? throw new ApiException(400, "User is not exist");
+      ?? throw new ApiException(400, "Principal is not exist");
 
     Task<User?> userTask = _UoW.UserRepository
       .GetByLogin(login)
@@ -79,7 +78,7 @@ public class ProfileService : IProfileService
      .Include(profile => profile.Photos)
      .AsNoTracking()
      .FirstOrDefaultAsync()
-     ?? throw new ApiException(400, "User is not exist");
+     ?? throw new ApiException(400, "Principal is not exist");
 
     string path = await _photoSavingService.SaveAsync(formFile);
 
@@ -95,16 +94,6 @@ public class ProfileService : IProfileService
     await _UoW.SaveAsync();
 
     return photo;
-  }
-
-  public Task DeletePhotoAsync(Guid principalId, Guid photoId)
-  {
-    throw new NotImplementedException();
-  }
-
-  public Task SetAvatarAsync(Guid principalId, Guid photoId)
-  {
-    throw new NotImplementedException();
   }
 
   public async Task<ProfileDTO> GetProfileDTOByIdAsync(Guid principalId, Guid userId)
