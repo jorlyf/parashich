@@ -6,6 +6,7 @@ using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +14,19 @@ using Microsoft.OpenApi.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+  .ConfigureApiBehaviorOptions(options =>
+  {
+    options.InvalidModelStateResponseFactory = context =>
+      new BadRequestObjectResult(
+        new ApiExceptionResponse()
+        {
+          Status = 400,
+          Message = "The request model is not valid"
+        }
+      );
+  });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
