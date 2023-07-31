@@ -71,4 +71,17 @@ public class ProfileSettingsService : IProfileSettingsService
 
     return avatarUrl;
   }
+
+  public async Task SetStatusAsync(Guid principalId, string status)
+  {
+    Profile principalProfile = await _UoW.ProfileRepository
+      .GetById(principalId)
+      .FirstOrDefaultAsync()
+      ?? throw new ApiException(400, "Principal is not exist");
+
+    principalProfile.Status = status;
+
+    _UoW.ProfileRepository.Update(principalProfile);
+    await _UoW.SaveAsync();
+  }
 }

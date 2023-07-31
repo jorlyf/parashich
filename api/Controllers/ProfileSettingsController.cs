@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using api.DTOs;
 using api.Infrastructure;
+using api.Infrastructure.Exceptions;
 using api.Services.Implementations;
 using api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -30,10 +33,20 @@ public class ProfileSettingsController : ControllerBase
   [Authorize]
   [HttpPut]
   [Route("Avatar/{id}")]
-  public async Task<ActionResult<string>> SetAvatarPhotoIdAsync([FromRoute] string id) // set avatar photo id
+  public async Task<ActionResult<string>> SetAvatarPhotoIdAsync([FromRoute] string id)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
     string avatarUrl = await _profileSettingsService.SetAvatarIdAsync(principalId, Guid.Parse(id));
     return Ok(avatarUrl);
+  }
+
+  [Authorize]
+  [HttpPut]
+  [Route("Status")]
+  public async Task<ActionResult> SetStatusAsync([FromBody] StatusChangeRequestDTO dto)
+  {
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    await _profileSettingsService.SetStatusAsync(principalId, dto.Status);
+    return Ok();
   }
 }

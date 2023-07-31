@@ -8,6 +8,7 @@ import { RequestType } from "@http/interfaces";
 import { RcFile } from "antd/es/upload";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import StatusChangeRequestDTO from "@dtos/Profile/StatusChangeRequestDTO";
 
 interface SettingsProps {
   setAvatarUrl: (url: string) => void;
@@ -45,21 +46,27 @@ const Settings: React.FC<SettingsProps> = observer(({ setAvatarUrl, status, setS
   }
 
   const changeStatus = async (text: string) => {
+    const body: StatusChangeRequestDTO = {
+      status: text
+    }
+
     try {
       await request({
         url: "/ProfileSettings/Status",
         type: RequestType.put,
-        body: text
+        body
       });
 
-      notification.success({
-        message: t("statusSaved"),
+      setStatus(body.status);
 
+      notification.success({
+        message: t("statusSaved")
       })
     } catch (error) {
       console.error(error);
+      const message = error.response?.data?.message ?? "An error has occured";
       notification.error({
-        message: t("errorHasOccured"),
+        message: t(message)
       })
     }
   }
