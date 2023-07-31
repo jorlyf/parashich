@@ -47,7 +47,7 @@ const Profile: React.FC<ProfileProps> = observer(({ store }) => {
 
         <Friends friends={null} />
 
-        <Photos photos={null} />
+        <Photos photos={profile.photos ?? []} />
       </div>
 
       <div className={styles.posts_container}>

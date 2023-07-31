@@ -42,6 +42,10 @@ class Profile {
   setStatus(text: string) {
     this.status = text;
   }
+
+  setPhotos(photos: any) {
+    this.photos = photos;
+  }
 }
 
 export default Profile;

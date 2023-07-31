@@ -1,5 +1,6 @@
 using api.DTOs;
 using api.Entities;
+using api.Infrastructure;
 using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Interfaces;
@@ -40,7 +41,7 @@ public class ProfileService : IProfileService
     return findedUserId;
   }
 
-  public async Task<ProfileDTO> GetProfileByLoginAsync(Guid principalId, string login)
+  public async Task<ProfileDTO> GetProfileDTOByLoginAsync(Guid principalId, string login)
   {
     Task<Profile?> principalProfileTask = _UoW.ProfileRepository
       .GetById(principalId)
@@ -84,7 +85,8 @@ public class ProfileService : IProfileService
 
     ProfilePhoto photo = new()
     {
-      Url = path
+      Url = path,
+      CreatedAt = TimeUtils.UTCNow.GetTotalMilliseconds()
     };
 
     profile.Photos.Add(photo);
@@ -124,5 +126,45 @@ public class ProfileService : IProfileService
     };
 
     return profileDTO;
+  }
+
+  public async Task<List<ProfilePhotoDTO>> GetProfilePhotoDTOsAsync(Guid principalId, Guid userId, int? limit)
+  {
+    List<ProfilePhotoDTO> photoDTOs;
+    if (limit != null)
+    {
+      photoDTOs = await _UoW.ProfileRepository
+        .GetById(userId)
+        .SelectMany(photo => photo.Photos
+          .Select(photo => new ProfilePhotoDTO()
+          {
+            Id = photo.Id,
+            ProfileId = userId,
+            Url = photo.Url,
+            CreatedAt = photo.CreatedAt
+          })
+          .OrderByDescending(photo => photo.CreatedAt)
+          .Take((int)limit)
+        )
+        .ToListAsync();
+    }
+    else
+    {
+      photoDTOs = await _UoW.ProfileRepository
+        .GetById(userId)
+        .SelectMany(photo => photo.Photos
+          .Select(photo => new ProfilePhotoDTO()
+          {
+            Id = photo.Id,
+            ProfileId = userId,
+            Url = photo.Url,
+            CreatedAt = photo.CreatedAt
+          })
+          .OrderByDescending(photo => photo.CreatedAt)
+        )
+        .ToListAsync();
+    }
+
+    return photoDTOs;
   }
 }

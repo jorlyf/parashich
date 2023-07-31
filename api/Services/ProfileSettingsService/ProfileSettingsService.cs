@@ -1,4 +1,5 @@
 using api.Entities;
+using api.Infrastructure;
 using api.Infrastructure.Exceptions;
 using api.Repositories;
 using api.Services.Interfaces;
@@ -58,7 +59,8 @@ public class ProfileSettingsService : IProfileSettingsService
 
     ProfilePhoto photo = new()
     {
-      Url = avatarUrl
+      Url = avatarUrl,
+      CreatedAt = TimeUtils.UTCNow.GetTotalMilliseconds()
     };
 
     principalProfile.Photos.Add(photo);

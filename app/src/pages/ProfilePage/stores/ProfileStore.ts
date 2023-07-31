@@ -42,6 +42,8 @@ class ProfileStore {
           avatarUrl: baseInfo.avatarUrl,
           status: baseInfo.status
         });
+
+        this.fetchBasePhotos();
       });
     } catch (error) {
       console.error(error);
@@ -52,6 +54,19 @@ class ProfileStore {
       runInAction(() => {
         this.loading = false;
       });
+    }
+  }
+
+  async fetchBasePhotos() {
+    try {
+      const { data } = await request({
+        url: `/Profiles/${this.id}/Photos?limit=3`,
+        type: RequestType.get
+      });
+
+      this.profile.setPhotos(data);
+    } catch {
+
     }
   }
 

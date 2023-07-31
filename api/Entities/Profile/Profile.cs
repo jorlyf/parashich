@@ -22,5 +22,5 @@ public class Profile : IEntity
   public List<ProfilePhoto> Photos { get; set; } = null!;
 
   [Required]
-  public required DateTime CreatedAt { get; set; }
+  public required long CreatedAt { get; set; }
 }

@@ -15,4 +15,7 @@ public class ProfilePhoto : IEntity
 
   [Required]
   public required string Url { get; set; } = null!;
+
+  [Required]
+  public required long CreatedAt { get; set; }
 }

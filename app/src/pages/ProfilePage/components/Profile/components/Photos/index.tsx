@@ -1,42 +1,25 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import DefaultAvatar from "@public/DefaultAvatar.jpg";
 import styles from "./styles.module.scss";
+import { BASE_URL_DATA } from "@http/api";
 
 interface PhotosProps {
-  photos: any[];
+  photos: IPhoto[];
 }
 
 interface IPhoto {
   id: string;
-  url: string | null;
+  url?: string;
 }
 
-const Photos: React.FC<PhotosProps> = () => {
-
-  const { t } = useTranslation();
-
-  const photos: IPhoto[] = [
-    {
-      id: "1",
-      url: null
-    },
-    {
-      id: "2",
-      url: null
-    },
-    {
-      id: "3",
-      url: null
-    }
-  ];
+const Photos: React.FC<PhotosProps> = ({ photos }) => {
 
   return (
     <div className={styles.photos}>
       <div className={styles.list}>
-        {photos.map(photo => (
+        {photos.slice(0, 3).map(photo => (
           <div key={photo.id}>
-            <img src={photo.url ?? DefaultAvatar} />
+            <img src={photo.url ? `${BASE_URL_DATA}\\${photo.url}` : DefaultAvatar} />
           </div>
         ))}
       </div>

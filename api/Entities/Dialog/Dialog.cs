@@ -15,5 +15,5 @@ public class Dialog : IEntity
   public List<DialogParticipant> Participants { get; set; } = null!;
 
   [Required]
-  public DateTime CreatedAt { get; set; }
+  public long CreatedAt { get; set; }
 }

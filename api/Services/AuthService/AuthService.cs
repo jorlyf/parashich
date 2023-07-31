@@ -54,7 +54,7 @@ public class AuthService : IAuthService
       PasswordHash = passwordHash,
       Profile = new()
       {
-        CreatedAt = TimeUtils.UTCNow
+        CreatedAt = TimeUtils.UTCNow.GetTotalMilliseconds()
       }
     };
 

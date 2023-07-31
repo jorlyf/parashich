@@ -21,8 +21,8 @@ public class DialogMessage : IEntity
   public List<DialogMessagePhotoAttachment> Photos { get; set; } = null!;
 
   [Required]
-  public required DateTime CreatedAt { get; set; }
+  public required long CreatedAt { get; set; }
 
   [Required]
-  public required DateTime LastEditedAt { get; set; }
+  public required long LastEditedAt { get; set; }
 }

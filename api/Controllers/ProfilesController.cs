@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ProfilesController : ControllerBase
@@ -18,7 +19,6 @@ public class ProfilesController : ControllerBase
     _profileService = profileService;
   }
 
-  [Authorize]
   [HttpGet]
   [Route("IdByLogin")]
   public async Task<ActionResult<Guid>> GetProfileIdByLoginAsync([FromQuery] string login)
@@ -28,7 +28,6 @@ public class ProfilesController : ControllerBase
     return Ok(profileId);
   }
 
-  [Authorize]
   [HttpGet]
   [Route("{id}")]
   public async Task<ActionResult<ProfileDTO>> GetProfileDTOByIdAsync([FromRoute] string id)
@@ -38,13 +37,21 @@ public class ProfilesController : ControllerBase
     return Ok(profileDTO);
   }
 
-  [Authorize]
   [HttpGet]
   [Route("")]
   public async Task<ActionResult<ProfileDTO>> GetProfileDTOByLoginAsync([FromQuery] string login)
   {
     Guid principalId = IdentityUtils.GetPrincipalId(User);
-    ProfileDTO profileDTO = await _profileService.GetProfileByLoginAsync(principalId, login);
+    ProfileDTO profileDTO = await _profileService.GetProfileDTOByLoginAsync(principalId, login);
     return Ok(profileDTO);
+  }
+
+  [HttpGet]
+  [Route("{userId}/Photos")]
+  public async Task<ActionResult<List<ProfilePhotoDTO>>> GetProfilePhotosByIdAsync([FromRoute] string userId, [FromQuery] int? limit)
+  {
+    Guid principalId = IdentityUtils.GetPrincipalId(User);
+    List<ProfilePhotoDTO> dtos = await _profileService.GetProfilePhotoDTOsAsync(principalId, Guid.Parse(userId), limit);
+    return Ok(dtos);
   }
 }
