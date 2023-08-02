@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { jorlyfTask } from "jorlyf-mobx-task";
 import request from "@http/request";
 import { RequestType } from "@http/interfaces";
 import { Profile } from "@entities/index";
@@ -10,12 +11,11 @@ class ProfileStore {
   myId: string = undefined;
 
   profile?: Profile = undefined;
-  fetched: boolean = false;
-  loading: boolean = false;
-  error?: string = undefined;
 
   constructor(id: string, myId: string) {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      fetchBaseInfo: false
+    });
 
     this.id = id;
     this.myId = myId;
@@ -23,39 +23,23 @@ class ProfileStore {
     this.fetchBaseInfo();
   }
 
-  async fetchBaseInfo() {
-    try {
-      this.loading = true;
+  fetchBaseInfo = jorlyfTask(async () => {
+    const { data: baseInfo } = await request<ProfileDTO>({
+      url: `/Profiles/${this.id}`,
+      type: RequestType.get
+    });
 
-      const { data: baseInfo } = await request<ProfileDTO>({
-        url: `/Profiles/${this.id}`,
-        type: RequestType.get
+    runInAction(() => {
+      this.profile = new Profile({
+        id: baseInfo.id,
+        login: baseInfo.login,
+        avatarUrl: baseInfo.avatarUrl,
+        status: baseInfo.status
       });
+    });
 
-      runInAction(() => {
-        this.loading = false;
-        this.fetched = true;
-
-        this.profile = new Profile({
-          id: baseInfo.id,
-          login: baseInfo.login,
-          avatarUrl: baseInfo.avatarUrl,
-          status: baseInfo.status
-        });
-
-        this.fetchBasePhotos();
-      });
-    } catch (error) {
-      console.error(error);
-      runInAction(() => {
-        this.error = "An error has occured";
-      });
-    } finally {
-      runInAction(() => {
-        this.loading = false;
-      });
-    }
-  }
+    this.fetchBasePhotos();
+  });
 
   async fetchBasePhotos() {
     try {

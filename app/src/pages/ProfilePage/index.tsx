@@ -73,13 +73,13 @@ const ProfilePage: React.FC = observer(() => {
     <MainLayout>
       <CustomHeader />
       <div className={styles.page_content}>
-        {profileStore.fetched &&
+        {profileStore.fetchBaseInfo.resolved &&
           <Profile
             store={profileStore}
           />
         }
-        {profileStore.loading && <>loading</>}
-        {profileStore.error && <>{profileStore.error}</>}
+        {profileStore.fetchBaseInfo.pending && <>loading</>}
+        {profileStore.fetchBaseInfo.rejected && <>error</>}
       </div>
     </MainLayout>
   );
