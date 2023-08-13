@@ -41,7 +41,7 @@ public class ProfileSettingsController : ControllerBase
   }
 
   [Authorize]
-  [HttpPut]
+  [HttpPatch]
   [Route("Status")]
   public async Task<ActionResult> SetStatusAsync([FromBody] StatusChangeRequestDTO dto)
   {

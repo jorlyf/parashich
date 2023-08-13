@@ -74,7 +74,7 @@ public class ProfileService : IProfileService
 
   public async Task<ProfilePhoto> AddPhotoAsync(Guid principalId, IFormFile formFile)
   {
-    Profile profile = await _UoW.ProfileRepository
+    Profile? profile = await _UoW.ProfileRepository
      .GetById(principalId)
      .Include(profile => profile.Photos)
      .AsNoTracking()
@@ -103,19 +103,17 @@ public class ProfileService : IProfileService
     Task<Profile?> principalProfileTask = _UoW.ProfileRepository
       .GetById(principalId)
       .AsNoTracking()
-      .FirstOrDefaultAsync()
-      ?? throw new ApiException(400, "User is not exist");
+      .FirstOrDefaultAsync();
 
     Task<Profile?> findedUserTask = _UoW.ProfileRepository
       .GetById(userId)
       .AsNoTracking()
       .Include(profile => profile.User)
       .Include(profile => profile.Photos)
-      .FirstOrDefaultAsync()
-      ?? throw new ApiException(404, "User not found");
+      .FirstOrDefaultAsync();
 
     Task.WaitAll(principalProfileTask, findedUserTask);
-    Profile findedProfile = findedUserTask.Result!;
+    Profile findedProfile = findedUserTask.Result! ?? throw new ApiException(404, "User not found"); ;
 
     ProfileDTO profileDTO = new()
     {

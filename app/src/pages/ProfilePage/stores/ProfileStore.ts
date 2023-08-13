@@ -4,6 +4,8 @@ import request from "@http/request";
 import { RequestType } from "@http/interfaces";
 import { Profile } from "@entities/index";
 import { ProfileDTO } from "@dtos/index";
+import { getApiUrl } from "@utils/url";
+import ProfilePhotoDTO from "@dtos/Profile/ProfilePhotoDTO";
 
 class ProfileStore {
 
@@ -29,6 +31,8 @@ class ProfileStore {
       type: RequestType.get
     });
 
+    baseInfo.avatarUrl = getApiUrl(baseInfo.avatarUrl);
+
     runInAction(() => {
       this.profile = new Profile({
         id: baseInfo.id,
@@ -43,10 +47,12 @@ class ProfileStore {
 
   async fetchBasePhotos() {
     try {
-      const { data } = await request({
+      let { data } = await request<ProfilePhotoDTO[]>({
         url: `/Profiles/${this.id}/Photos?limit=3`,
         type: RequestType.get
       });
+
+      data = data.map(photo => ({ ...photo, url: getApiUrl(photo.url) }));
 
       this.profile.setPhotos(data);
     } catch {

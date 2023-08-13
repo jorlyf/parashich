@@ -1,7 +1,6 @@
 import React from "react";
 import DefaultAvatar from "@public/DefaultAvatar.jpg";
 import styles from "./styles.module.scss";
-import { BASE_URL_DATA } from "@http/api";
 
 interface PhotosProps {
   photos: IPhoto[];
@@ -19,7 +18,7 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
       <div className={styles.list}>
         {photos.slice(0, 3).map(photo => (
           <div key={photo.id}>
-            <img src={photo.url ? `${BASE_URL_DATA}\\${photo.url}` : DefaultAvatar} />
+            <img src={photo.url ?? DefaultAvatar} />
           </div>
         ))}
       </div>

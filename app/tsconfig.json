@@ -20,7 +20,8 @@
       "@translations/*": ["src/translations/*"],
       "@entities/*": ["src/entities/*"],
       "@dtos/*": ["src/dtos/*"],
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }

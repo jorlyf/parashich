@@ -53,21 +53,21 @@ const Settings: React.FC<SettingsProps> = observer(({ setAvatarUrl, status, setS
     try {
       await request({
         url: "/ProfileSettings/Status",
-        type: RequestType.put,
+        type: RequestType.patch,
         body
       });
 
       setStatus(body.status);
 
       notification.success({
-        message: t("statusSaved")
-      })
+        message: t("The status saved")
+      });
     } catch (error) {
       console.error(error);
       const message = error.response?.data?.message ?? "An error has occured";
       notification.error({
         message: t(message)
-      })
+      });
     }
   }
 

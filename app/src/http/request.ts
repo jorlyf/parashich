@@ -34,6 +34,10 @@ const request = async <T>({
     return $api.put<T>(url, body, config);
   }
 
+  const httpPatch = (config: AxiosRequestConfig) => {
+    return $api.patch<T>(url, body, config);
+  }
+
   const httpDelete = (config: AxiosRequestConfig) => {
     return $api.delete<T>(url, config);
   }
@@ -57,6 +61,10 @@ const request = async <T>({
     }
     case RequestType.put: {
       method = httpPut;
+      break;
+    }
+    case RequestType.patch: {
+      method = httpPatch;
       break;
     }
     case RequestType.delete: {

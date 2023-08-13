@@ -4,6 +4,7 @@ import request from "@http/request";
 import { RequestType } from "@http/interfaces";
 import { ProfileSearchResponseDTO } from "@dtos/index";
 import { IUserSearchResultListItem } from "../components/UserSearchResultList";
+import { getApiUrl } from "@utils/url";
 
 const useUserSearch = () => {
 
@@ -26,7 +27,7 @@ const useUserSearch = () => {
       setUsers(profileDTOs.map(profile => ({
         id: profile.id,
         login: profile.login,
-        avatarUrl: profile.avatarUrl,
+        avatarUrl: getApiUrl(profile.avatarUrl),
         onClick: () => {
           redirectToUserProfile(profile.login);
           setUsers([]);
